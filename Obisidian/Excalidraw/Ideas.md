@@ -137,28 +137,28 @@ Wave Survival ^v7mtZTfw
 			"baseline": 18
 		},
 		{
-			"id": "c_fpUUtJZKEZU2wpqEvug",
 			"type": "freedraw",
-			"x": 211.09976196289062,
-			"y": -61.36328125,
-			"width": 325.5,
-			"height": 130,
-			"angle": 0,
-			"strokeColor": "#1e1e1e",
-			"backgroundColor": "transparent",
+			"version": 83,
+			"versionNonce": 296465790,
+			"isDeleted": false,
+			"id": "c_fpUUtJZKEZU2wpqEvug",
 			"fillStyle": "solid",
 			"strokeWidth": 2,
 			"strokeStyle": "solid",
 			"roughness": 1,
 			"opacity": 100,
+			"angle": 0,
+			"x": 211.09976196289062,
+			"y": -61.36328125,
+			"strokeColor": "#1e1e1e",
+			"backgroundColor": "transparent",
+			"width": 325.5,
+			"height": 130,
+			"seed": 44010978,
 			"groupIds": [],
 			"frameId": null,
 			"roundness": null,
-			"seed": 44010978,
-			"version": 83,
-			"versionNonce": 296465790,
-			"isDeleted": false,
-			"boundElements": null,
+			"boundElements": [],
 			"updated": 1706006996116,
 			"link": null,
 			"locked": false,
@@ -492,16 +492,13 @@ Wave Survival ^v7mtZTfw
 					61
 				]
 			],
-			"pressures": [],
+			"lastCommittedPoint": null,
 			"simulatePressure": true,
-			"lastCommittedPoint": [
-				300.5,
-				61
-			]
+			"pressures": []
 		}
 	],
 	"appState": {
-		"theme": "light",
+		"theme": "dark",
 		"viewBackgroundColor": "#ffffff",
 		"currentItemStrokeColor": "#1e1e1e",
 		"currentItemBackgroundColor": "transparent",
@@ -515,7 +512,7 @@ Wave Survival ^v7mtZTfw
 		"currentItemTextAlign": "left",
 		"currentItemStartArrowhead": null,
 		"currentItemEndArrowhead": "arrow",
-		"scrollX": 191.90023803710938,
+		"scrollX": 186.7001190185547,
 		"scrollY": 328.62109375,
 		"zoom": {
 			"value": 2

@@ -33,7 +33,7 @@ public class GameManager : Singleton<GameManager> {
 
     private void Start() {
         _enemyManagers = FindObjectsOfType<EnemyManager>();
-        _tickSystem = GetComponent<TickSystem>();
+        _tickSystem = gameObject.GetOrAddComponent<TickSystem>();
         _tickSystem.TickLoop += HandleEndGame;
         _tickSystem.TickLoop += (float deltaTime) => _combatTimer.Update(deltaTime);
         _bgmEmitter = GetComponent<BGMEmitter>();

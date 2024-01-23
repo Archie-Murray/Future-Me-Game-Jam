@@ -5,13 +5,12 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Utilities;
 
-[RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(InputHandler))]
 public class PlayerController : MonoBehaviour {
 
     [Header("Component References")]
-    [SerializeField] private Rigidbody2D _rb2D;
+    [SerializeField] private CharacterController _controller;
     [SerializeField] private InputHandler _inputHandler;  
     [SerializeField] private Health _health;
     [SerializeField] private SFXEmitter _emitter;
@@ -22,6 +21,8 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float _acceleration = 600f;
     [SerializeField] private float _maxRotationSpeed = 5f;
     [SerializeField] private float _rotationAcceleration = 5f;
+    [SerializeField] private Vector3 _velocity;
+    [SerializeField] private Vector3 _input;
 
     [Header("Gameplay Variables")]
     [SerializeField] private float _speed;
@@ -47,7 +48,7 @@ public class PlayerController : MonoBehaviour {
     public float SpeedPercent => Mathf.Clamp01(_speed / _maxSpeed);
 
     private void Awake() {
-        _rb2D = GetComponent<Rigidbody2D>();
+        _controller = GetComponent<CharacterController>();
         _inputHandler = GetComponent<InputHandler>();
         _emitter = GetComponent<SFXEmitter>();
         _health = GetComponent<Health>();
@@ -77,31 +78,26 @@ public class PlayerController : MonoBehaviour {
 
     private void FixedUpdate() {
         Move();
-        RotateToMouse();
         _fireTimer.Update(Time.fixedDeltaTime);
         _heavyFireTimer.Update(Time.fixedDeltaTime);
         _eliteFireTimer.Update(Time.fixedDeltaTime);
         _dashTimer.Update(Time.fixedDeltaTime);
     }
 
-    private void RotateToMouse() {
-        Vector2 lookAt = (Globals.Instance.MainCamera.ScreenToWorldPoint(_inputHandler.MousePosition) - transform.position).normalized;
-        _rotationSpeed = Mathf.MoveTowards(_rotationSpeed, _maxRotationSpeed, Time.fixedDeltaTime * _rotationAcceleration * (1.5f - ((Vector2.Dot(lookAt, transform.up) + 1f) * 0.5f)));
-        Quaternion rotation = Quaternion.AngleAxis(Vector2.SignedAngle(lookAt, Vector2.up), Vector3.back);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.fixedDeltaTime * _rotationSpeed);
-    }
-
     private void Move() {
-        _speed = Mathf.MoveTowards(_speed, GetTargetSpeed(), Time.fixedDeltaTime * _acceleration);
-        if (!_inputHandler.BrakePressed) {
-            _rb2D.velocity += Time.fixedDeltaTime * _speed * _inputHandler.MoveInput;
-            _rb2D.velocity = _rb2D.velocity.ClampMagnitude(GetMaxSpeed());
+        _speed = GetTargetSpeed();
+        _input.x = _inputHandler.MoveInput.x;
+        _input.z = _inputHandler.MoveInput.y;
+        _velocity.y = -0.1f;
+        if (!_dashTimer.IsRunning) {
+            _velocity = Vector3.ClampMagnitude(_input * _speed, _maxSpeed);
         } else {
-            _rb2D.velocity += (Time.fixedDeltaTime * _brakeForce * -_rb2D.velocity.normalized).ClampMagnitude(_rb2D.velocity.magnitude);
+            _velocity /=_brakeForce;
         }
+        _controller.SimpleMove(_velocity);
         if (_dashPressed) {
             _dashPressed = false;
-            _rb2D.AddForce(transform.up * _dashForce, ForceMode2D.Impulse);
+            _velocity += transform.forward * _dashForce;
             GameManager.Instance.CameraPan(_dashForce * 0.1f, _dashCooldown);
             GameManager.Instance.CameraAberration(0.25f, _dashCooldown);
             _dashTimer.Reset();
