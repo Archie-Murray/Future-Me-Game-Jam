@@ -34,11 +34,11 @@ public class GameManager : Singleton<GameManager> {
     private void Start() {
         _enemyManagers = FindObjectsOfType<EnemyManager>();
         _tickSystem = gameObject.GetOrAddComponent<TickSystem>();
-        _tickSystem.TickLoop += HandleEndGame;
+        // _tickSystem.TickLoop += HandleEndGame;
         _tickSystem.TickLoop += (float deltaTime) => _combatTimer.Update(deltaTime);
-        _bgmEmitter = GetComponent<BGMEmitter>();
-        _combatTimer.OnTimerStart += () => _bgmEmitter.PlayBGM(BGMType.COMBAT);
-        _combatTimer.OnTimerStop += () => _bgmEmitter.PlayBGM(BGMType.PASSIVE);
+        // _bgmEmitter = GetComponent<BGMEmitter>();
+        // _combatTimer.OnTimerStart += () => _bgmEmitter.PlayBGM(BGMType.COMBAT);
+        // _combatTimer.OnTimerStop += () => _bgmEmitter.PlayBGM(BGMType.PASSIVE);
         _virtualCamera = FindFirstObjectByType<CinemachineVirtualCamera>();
         _initialCameraSize = _virtualCamera.m_Lens.OrthographicSize;
         _cameraNoise = _virtualCamera.OrNull()?.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>() ?? null;
@@ -125,11 +125,11 @@ public class GameManager : Singleton<GameManager> {
         if (_endGameState != null) {
             return;
         }
-        if (GameEnd) {
-            _endGameState = StartCoroutine(WinState());
-        } else if (!PlayerAlive) {
-            _endGameState = StartCoroutine(LoseState());
-        }
+        // if (GameEnd) {
+        //     _endGameState = StartCoroutine(WinState());
+        // } else if (!PlayerAlive) {
+        //     _endGameState = StartCoroutine(LoseState());
+        // }
     }
 
     private IEnumerator WinState() {
