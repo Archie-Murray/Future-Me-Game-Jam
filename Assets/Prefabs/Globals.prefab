@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3991897785478003828
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4265779425141861096}
+  - component: {fileID: 1096904759747267974}
+  - component: {fileID: 4705144670159091835}
+  m_Layer: 0
+  m_Name: Globals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4265779425141861096
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3991897785478003828}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.2638626, y: 0.30451918, z: 0.123413324}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1096904759747267974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3991897785478003828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5602c7143ae7932b39f7db3f8416e520, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MainCamera: {fileID: 0}
+  PlayerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  EnemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  SoundManager:
+    MainMixer: {fileID: 0}
+    BGM: {fileID: 0}
+    SFX: {fileID: 0}
+  _effects: []
+  _audioMixer: {fileID: 0}
+  _sfx: {fileID: 0}
+  _bgm: {fileID: 0}
+--- !u!114 &4705144670159091835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3991897785478003828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cf3c3e5908a6f645aaf616fe72e10ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BossDead: 0
+  PlayerAlive: 1
+  InMenu: 0
+  _winScreen: {fileID: 0}
+  _loseScreen: {fileID: 0}
+  _tickSystem: {fileID: 0}
+  _enemyManagers: []
+  _combatTimer:
+    _initialTime: 0
+    _time: 0
+  _cameraNoise: {fileID: 0}
+  _virtualCamera: {fileID: 0}
+  _bgmEmitter: {fileID: 0}
+  _postProcessVolume: {fileID: 0}
+  _chromaticAberration: {fileID: 0}
+  _tutorialManager: {fileID: 0}
