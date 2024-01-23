@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 989
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Hierarchy
   m_RootView: {fileID: 3}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 102
+  controlID: 38
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -415,7 +415,7 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 54710000
+      m_SelectedIDs: 
       m_LastClickedID: 0
       m_ExpandedIDs: 06fbffff
       m_RenameOverlay:
@@ -1451,9 +1451,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -6.350155, y: 0.19931161, z: -9.409959}
+    m_Target: {x: -5.588579, y: 0.59782994, z: -9.605255}
     speed: 2
-    m_Value: {x: -6.350155, y: 0.19931161, z: -9.409959}
+    m_Value: {x: -4.785257, y: 1.6128914, z: 0.47488946}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1501,11 +1501,11 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: 0.006866069, y: -0.99313563, z: 0.082429804, w: 0.08272654}
     speed: 2
-    m_Value: {x: -0.006866069, y: 0.9931357, z: -0.08242981, w: -0.082726546}
+    m_Value: {x: 0.006866056, y: -0.9931337, z: 0.08242965, w: 0.08272638}
   m_Size:
-    m_Target: 5.809865
+    m_Target: 3.8652065
     speed: 2
-    m_Value: 5.809865
+    m_Value: 0.23401444
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1576,7 +1576,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Objects/Character/sketchfab
+    - Assets/Objects/Character/sketchfab/viking 1
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -1584,16 +1584,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 96
   m_LastFolders:
-  - Assets/Objects/Character/sketchfab
+  - Assets/Objects/Character/sketchfab/viking 1
   m_LastFoldersGridSize: 96
   m_LastProjectPath: B:\github\Future-Me-Game-Jam
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: de6f0000
-    m_LastClickedID: 28638
-    m_ExpandedIDs: 00000000d46c0000846e00008e6e0000906e0000de6f000000ca9a3b
+    m_SelectedIDs: a66e0000
+    m_LastClickedID: 28326
+    m_ExpandedIDs: 00000000d66c0000866e00008e6e0000906e00004e7100005671000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1621,7 +1621,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000d46c0000
+    m_ExpandedIDs: 00000000d66c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1930,7 +1930,8 @@ MonoBehaviour:
     m_LastAppliedPresetName: Default
     m_SaveData: []
     m_OverlaysVisible: 1
-  m_ObjectsLockedBeforeSerialization: []
+  m_ObjectsLockedBeforeSerialization:
+  - {fileID: 2100000, guid: 5670d4622a3b1544e864bbce852b8d0a, type: 2}
   m_InstanceIDsLockedBeforeSerialization: 
   m_PreviewResizer:
     m_CachedPref: 151
@@ -1941,5 +1942,5 @@ MonoBehaviour:
   m_GlobalObjectId: 
   m_InspectorMode: 0
   m_LockTracker:
-    m_IsLocked: 0
+    m_IsLocked: 1
   m_PreviewWindow: {fileID: 0}
