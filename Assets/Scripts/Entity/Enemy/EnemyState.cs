@@ -32,10 +32,9 @@ namespace Enemy {
 
             private Dictionary<Type, EnemyState> _states;
 
-            public EnemyStateFactory(EnemyController controller, SpriteRenderer renderer, EnemyManager manager) {
+            public EnemyStateFactory(EnemyController controller, EnemyManager manager) {
                 _states = new Dictionary<Type, EnemyState>() {
                 { typeof(EnemyIdleState), new EnemyIdleState(controller, manager, this) },
-                { typeof(EnemyPatrolState), new EnemyPatrolState(controller, manager, this) },
                 { typeof(EnemyChaseState), new EnemyChaseState(controller, manager, this) },
                 { typeof(EnemyAttackState), new EnemyAttackState(controller, manager, this) },
             };

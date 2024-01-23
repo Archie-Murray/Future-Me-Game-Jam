@@ -9,6 +9,7 @@ namespace Enemy {
             _controller.Agent.destination = _enemyManager.Target.position;
         }
         public override void FixedUpdate() {
+            _controller.Animator.SetFloat(_controller.SpeedHash, _controller.Agent.velocity.magnitude / _controller.Agent.speed);
             if (Vector2.Distance(_enemyManager.Target.position, _controller.Agent.destination) > 1f) {
                 _controller.Agent.destination = _enemyManager.Target.position;
             }
