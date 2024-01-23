@@ -14,5 +14,6 @@ public class Globals : Singleton<Globals> {
 
     public void Start() {
         SoundManager = new SoundManager(_effects, _audioMixer, _sfx, _bgm);
+        MainCamera = Camera.main;
     }
 }

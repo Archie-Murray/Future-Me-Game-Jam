@@ -3,10 +3,9 @@ using UnityEngine;
 namespace Enemy {
     public class EnemyPatrolState : EnemyState {
         private int _wanderPointIndex;
-        public EnemyPatrolState(EnemyController controller, SpriteRenderer spriteRenderer, EnemyManager enemyManager, EnemyState.EnemyStateFactory enemyStateFactory) : base(controller, spriteRenderer, enemyManager, enemyStateFactory) { }
+        public EnemyPatrolState(EnemyController controller, EnemyManager enemyManager, EnemyStateFactory enemyStateFactory) : base(controller, enemyManager, enemyStateFactory) { }
 
         public override void Start() {
-            _spriteRenderer.color = Color.cyan;
             _wanderPointIndex = Random.Range(0, _enemyManager.WanderPoints.Length);
             _controller.Agent.destination = _enemyManager.WanderPoints[_wanderPointIndex].position;
         }
@@ -31,7 +30,6 @@ namespace Enemy {
         }
         public override void Update() { }
         public override void Exit() { 
-            _spriteRenderer.color = Color.white; 
         }
 
     }

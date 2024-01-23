@@ -6,13 +6,12 @@ using UnityEngine;
 namespace Enemy {
     public abstract class EnemyState : IEnemyState {
         protected readonly EnemyController _controller;
-        protected readonly SpriteRenderer _spriteRenderer;
+
         protected readonly EnemyManager _enemyManager;
         protected readonly EnemyStateFactory _enemyStateFactory;
 
-        public EnemyState(EnemyController controller, SpriteRenderer spriteRenderer, EnemyManager enemyManager, EnemyStateFactory enemyStateFactory) {
+        public EnemyState(EnemyController controller, EnemyManager enemyManager, EnemyStateFactory enemyStateFactory) {
             _controller = controller;
-            _spriteRenderer = spriteRenderer;
             _enemyManager = enemyManager;
             _enemyStateFactory = enemyStateFactory;
         }
@@ -35,10 +34,10 @@ namespace Enemy {
 
             public EnemyStateFactory(EnemyController controller, SpriteRenderer renderer, EnemyManager manager) {
                 _states = new Dictionary<Type, EnemyState>() {
-                { typeof(EnemyIdleState), new EnemyIdleState(controller, renderer, manager, this) },
-                { typeof(EnemyPatrolState), new EnemyPatrolState(controller, renderer, manager, this) },
-                { typeof(EnemyChaseState), new EnemyChaseState(controller, renderer, manager, this) },
-                { typeof(EnemyAttackState), new EnemyAttackState(controller, renderer, manager, this) },
+                { typeof(EnemyIdleState), new EnemyIdleState(controller, manager, this) },
+                { typeof(EnemyPatrolState), new EnemyPatrolState(controller, manager, this) },
+                { typeof(EnemyChaseState), new EnemyChaseState(controller, manager, this) },
+                { typeof(EnemyAttackState), new EnemyAttackState(controller, manager, this) },
             };
             }
 

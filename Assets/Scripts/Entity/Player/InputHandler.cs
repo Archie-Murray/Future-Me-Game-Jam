@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class InputHandler : MonoBehaviour {
     public Vector2 MoveInput;
     public Vector2 MousePosition;
+    public Vector3 WorldMousePosition;
     public float DashInput;
     public float SprintInput;
     public float BrakeInput;
@@ -13,6 +14,8 @@ public class InputHandler : MonoBehaviour {
     public bool HeavyFireInput;
     public bool EliteFireInput;
 
+    private Plane _plane = new Plane(Vector3.up, 0f);
+    private Ray _ray;
     private Controls _inputActions;
     public Controls InputActions => _inputActions;
 
@@ -41,8 +44,13 @@ public class InputHandler : MonoBehaviour {
         _inputActions.PlayerControls.SpecialFire.canceled += MagicFireHandle;
         //_inputActions.Enable();
     }
-
-    private void LookHandle(InputAction.CallbackContext context) => MousePosition = context.ReadValue<Vector2>();
+    private void LookHandle(InputAction.CallbackContext context) { 
+        MousePosition = context.ReadValue<Vector2>();
+        _ray = Globals.Instance.MainCamera.ScreenPointToRay(MousePosition);
+        if (_plane.Raycast(_ray, out float distance)) {
+            WorldMousePosition = _ray.GetPoint(distance);
+        } 
+    }
     private void MoveHandle(InputAction.CallbackContext context) => MoveInput = context.ReadValue<Vector2>();
     private void DashHandle(InputAction.CallbackContext context) => DashInput = context.ReadValue<float>();
     private void SprintHandle(InputAction.CallbackContext context) => SprintInput = context.ReadValue<float>();
@@ -59,4 +67,5 @@ public class InputHandler : MonoBehaviour {
     public bool IsDashPressed => !Mathf.Approximately(DashInput, 0f);
     public bool IsSprintPressed => !Mathf.Approximately(SprintInput, 0f);
     public bool BrakePressed => !Mathf.Approximately(BrakeInput, 0f);
+    
 }

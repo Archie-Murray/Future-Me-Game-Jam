@@ -4,6 +4,7 @@ using UnityEngine.Events;
 public class Health : MonoBehaviour {
     [SerializeField] private float _maxHealth = 100f;
     [SerializeField] private float _currentHealth;
+    [SerializeField] private float _defence;
     [SerializeField] private float _deathTimer = 0.25f;
     [SerializeField] private bool _isInvulnerable = false;
     [SerializeField] private Color _originalColour;
@@ -16,8 +17,25 @@ public class Health : MonoBehaviour {
     public float CurrentHealth => _currentHealth;
     public float MaxHealth => _maxHealth;
 
-    private void Awake() {
-        _currentHealth = _maxHealth;
+    public void Init(float maxHealth, float defence) {
+        _maxHealth = maxHealth;
+        _currentHealth = maxHealth;
+        _defence = defence;
+
+    }
+
+    public static float DefenceToMultiplier(float defence) {
+        return defence < 0.0f ? 2.0f - (100.0f / (100.0f - defence)) : 100.0f / (100.0f + defence);
+    }
+
+    public void UpdateHealthAndDefence(StatType type, float amount) {
+        if (type == StatType.MAX_HEALTH) {
+            float diff = amount - _maxHealth;
+            _maxHealth = amount;
+            Heal(diff);
+        } else if (type == StatType.DEFENCE) {
+            _defence = amount;
+        }
     }
 
     public void Damage(float amount) {
@@ -27,6 +45,7 @@ public class Health : MonoBehaviour {
         if (_currentHealth < 0f) {
             return;
         }
+        amount = Mathf.Max(amount - _defence, 0f);
         _currentHealth = Mathf.Max(_currentHealth - amount, 0f);
         OnDamage?.Invoke(amount);
         if (_currentHealth == 0f) {

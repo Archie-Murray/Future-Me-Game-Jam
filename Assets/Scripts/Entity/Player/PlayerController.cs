@@ -1,5 +1,7 @@
 using System;
 
+using UnityEditor.Timeline;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -7,6 +9,10 @@ using Utilities;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(InputHandler))]
+[RequireComponent(typeof(Health))]
+[RequireComponent(typeof(Stats))]
+[RequireComponent(typeof(SFXEmitter))]
+[RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour {
 
     [Header("Component References")]
@@ -14,27 +20,19 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private InputHandler _inputHandler;  
     [SerializeField] private Health _health;
     [SerializeField] private SFXEmitter _emitter;
+    [SerializeField] private Stats _stats;
+    [SerializeField] private Animator _animator;
     
     [Header("Player Variables")]
     [SerializeField] private float _maxSpeed = 5f;
     [SerializeField] private float _sprintSpeed = 7f;
     [SerializeField] private float _acceleration = 600f;
-    [SerializeField] private float _maxRotationSpeed = 5f;
-    [SerializeField] private float _rotationAcceleration = 5f;
+    [SerializeField] private float _rotationSpeed = 5f;
     [SerializeField] private Vector3 _velocity;
     [SerializeField] private Vector3 _input;
 
     [Header("Gameplay Variables")]
     [SerializeField] private float _speed;
-    [SerializeField] private float _rotationSpeed;
-
-    [Header("Projectiles")]
-    [SerializeField] private float _fireRate = 0.25f;
-    [SerializeField] private float _heavyFireRate = 0.5f;
-    [SerializeField] private float _specialFireRate = 1.0f;
-    [SerializeField] private CountDownTimer _fireTimer;
-    [SerializeField] private CountDownTimer _heavyFireTimer;
-    [SerializeField] private CountDownTimer _eliteFireTimer;
 
     [Header("UI")]
 
@@ -45,16 +43,19 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private bool _dashPressed = false; //Need to make sure this is consumed in FixedUpdate
     [SerializeField] private float _brakeForce = 20f;
 
+    private readonly int SpeedHash = Animator.StringToHash("Speed");
+
     public float SpeedPercent => Mathf.Clamp01(_speed / _maxSpeed);
 
     private void Awake() {
         _controller = GetComponent<CharacterController>();
         _inputHandler = GetComponent<InputHandler>();
         _emitter = GetComponent<SFXEmitter>();
+        _stats = GetComponent<Stats>();
+        _animator = GetComponent<Animator>();
         _health = GetComponent<Health>();
-        _fireTimer = new CountDownTimer(_fireRate);
-        _heavyFireTimer = new CountDownTimer(_heavyFireRate);
-        _eliteFireTimer = new CountDownTimer(_specialFireRate);
+        _health.Init(_stats.GetStat(StatType.MAX_HEALTH), _stats.GetStat(StatType.DEFENCE));
+        _stats.OnStatChange += _health.UpdateHealthAndDefence;
         _dashTimer = new CountDownTimer(_dashCooldown);
         _dashTimer.Start();
     }
@@ -77,23 +78,25 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void FixedUpdate() {
+        RotateToMouse();
         Move();
-        _fireTimer.Update(Time.fixedDeltaTime);
-        _heavyFireTimer.Update(Time.fixedDeltaTime);
-        _eliteFireTimer.Update(Time.fixedDeltaTime);
+        _animator.SetFloat(SpeedHash, Mathf.Clamp01(_speed / GetMaxSpeed()));
         _dashTimer.Update(Time.fixedDeltaTime);
     }
 
+    private void RotateToMouse() {
+        Vector3 diff = (_inputHandler.WorldMousePosition - transform.position).normalized;
+        diff.y = 0f;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(diff), Time.fixedDeltaTime * _rotationSpeed);
+    }
+
     private void Move() {
-        _speed = GetTargetSpeed();
+        _speed = Mathf.MoveTowards(_speed, GetTargetSpeed(), Time.fixedDeltaTime * _acceleration);
         _input.x = _inputHandler.MoveInput.x;
         _input.z = _inputHandler.MoveInput.y;
+        _velocity = _input;
         _velocity.y = -0.1f;
-        if (!_dashTimer.IsRunning) {
-            _velocity = Vector3.ClampMagnitude(_input * _speed, _maxSpeed);
-        } else {
-            _velocity /=_brakeForce;
-        }
+        _velocity = Vector3.ClampMagnitude(_velocity * _speed, GetMaxSpeed());
         _controller.SimpleMove(_velocity);
         if (_dashPressed) {
             _dashPressed = false;
