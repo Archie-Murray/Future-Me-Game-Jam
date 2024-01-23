@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Assests : Singleton<Assests>
 {
-    public GameObject HitParticles;
-
+    public ParticleSystem HitParticles;
+    void Update() {
+        HitParticles.playbackSpeed = 1;
+    }
 
 }
