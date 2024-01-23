@@ -1,4 +1,7 @@
 using System;
+using System.Linq;
+
+using Enemy;
 
 using UnityEditor.Timeline;
 
@@ -30,6 +33,8 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float _rotationSpeed = 5f;
     [SerializeField] private Vector3 _velocity;
     [SerializeField] private Vector3 _input;
+    [SerializeField] private CountDownTimer _lightAttack;
+    [SerializeField] private CountDownTimer _heavyAttack;
 
     [Header("Gameplay Variables")]
     [SerializeField] private float _speed;
@@ -42,16 +47,21 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private CountDownTimer _dashTimer;
     [SerializeField] private bool _dashPressed = false; //Need to make sure this is consumed in FixedUpdate
     [SerializeField] private float _brakeForce = 20f;
-
+    private float _attackRadius;
     private readonly int SpeedHash = Animator.StringToHash("Speed");
+    private readonly int LightHash = Animator.StringToHash("Light");
+    private readonly int HeavyHash = Animator.StringToHash("Heavy");
 
     public float SpeedPercent => Mathf.Clamp01(_speed / _maxSpeed);
+    private bool IsIdle => !_lightAttack.IsRunning && !_heavyAttack.IsRunning;
 
     private void Awake() {
         _controller = GetComponent<CharacterController>();
         _inputHandler = GetComponent<InputHandler>();
         _emitter = GetComponent<SFXEmitter>();
         _stats = GetComponent<Stats>();
+        _lightAttack = new CountDownTimer(1f / _stats.GetStat(StatType.ATTACK_SPEED));
+        _heavyAttack = new CountDownTimer(1.5f / _stats.GetStat(StatType.ATTACK_SPEED));
         _animator = GetComponent<Animator>();
         _health = GetComponent<Health>();
         _health.Init(_stats.GetStat(StatType.MAX_HEALTH), _stats.GetStat(StatType.DEFENCE));
@@ -71,9 +81,35 @@ public class PlayerController : MonoBehaviour {
         if (GameManager.Instance.InMenu) {
             return;
         }
+
+        if (IsIdle) {
+            if (_inputHandler.HeavyFireInput) {
+                _heavyAttack.Start();
+                HeavyAttack();
+            } else if (_inputHandler.FireInput) {
+                _lightAttack.Start();
+                LightAttack();
+            }
+        }
         
         if (_inputHandler.IsDashPressed && _dashTimer.IsFinished) {
             _dashPressed = true;
+        }
+    }
+
+    private void LightAttack() {
+        _animator.SetTrigger(LightHash);
+        Health[] healths = Array.ConvertAll(Physics.OverlapSphere(transform.position, _attackRadius, Globals.Instance.EnemyLayer).Where((Collider collider) => collider.gameObject.HasComponent<EnemyController>()).ToArray(), (Collider collider) => collider.GetComponent<Health>());
+        foreach (Health health in healths) {
+            health.Damage(_stats.GetStat(StatType.ATTACK_DAMAGE));
+        }
+    }
+
+    private void HeavyAttack() {
+        _animator.SetTrigger(HeavyHash);
+        Health[] healths = Array.ConvertAll(Physics.OverlapSphere(transform.position, _attackRadius, Globals.Instance.EnemyLayer).Where((Collider collider) => collider.gameObject.HasComponent<EnemyController>()).ToArray(), (Collider collider) => collider.GetComponent<Health>());
+        foreach (Health health in healths) {
+            health.Damage(_stats.GetStat(StatType.ATTACK_DAMAGE) * 1.5f);
         }
     }
 
@@ -82,6 +118,8 @@ public class PlayerController : MonoBehaviour {
         Move();
         _animator.SetFloat(SpeedHash, Mathf.Clamp01(_speed / GetMaxSpeed()));
         _dashTimer.Update(Time.fixedDeltaTime);
+        _lightAttack.Update(Time.fixedDeltaTime);
+        _heavyAttack.Update(Time.fixedDeltaTime);
     }
 
     private void RotateToMouse() {
