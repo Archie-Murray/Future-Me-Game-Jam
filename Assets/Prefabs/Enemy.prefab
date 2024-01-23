@@ -170,7 +170,7 @@ MonoBehaviour:
   _maxAcceleration: 60
   _maxTurnSpeed: 5
   _chaseRange: 10
-  _attackRange: 5
+  _attackRange: 1
   _attackSpeed: 3.7
   _damage: 1
   _attackTimer:
@@ -195,7 +195,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0
+  m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &223143348551059896
