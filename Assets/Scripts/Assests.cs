@@ -5,8 +5,14 @@ using UnityEngine;
 public class Assests : Singleton<Assests>
 {
     public ParticleSystem HitParticles;
-    void Update() {
-        HitParticles.playbackSpeed = 1;
+    void LateUpdate() {
+        var main = HitParticles.main;
+        main.simulationSpeed = 0;
+
+    }
+    void damgage() {
+        var main = HitParticles.main;
+        main.simulationSpeed = 1;
     }
 
 }
