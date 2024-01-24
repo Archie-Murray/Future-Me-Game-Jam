@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using static UnityEngine.Rendering.DebugUI;
 
 public class Emotemanager : MonoBehaviour {
     private readonly int _emoteHash = Animator.StringToHash("Emote");
@@ -22,6 +23,7 @@ public class Emotemanager : MonoBehaviour {
         _animGUI.alpha = _enabledGUI ? 1f : 0f;
         if (Input.GetKeyDown(KeyCode.E)) {
             _enabledGUI = !_enabledGUI;
+            Debug.Log(_emoteID);
         }
     }
 
@@ -32,5 +34,6 @@ public class Emotemanager : MonoBehaviour {
         } else {
             _emoteID = value;
         }
+        Debug.Log(value);
     }
 }
