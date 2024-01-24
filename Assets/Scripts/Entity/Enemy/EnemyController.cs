@@ -25,7 +25,7 @@ namespace Enemy {
         [SerializeField] private float _maxTurnSpeed = 5f;
         [SerializeField] private float _chaseRange = 10f;
         [SerializeField] private float _attackRange = 5f;
-        [SerializeField] private float _attackSpeed = 3.7f;
+        [SerializeField] private float _attackDuration = 3.7f;
         [SerializeField] private float _damage = 1f;
 
         [Header("Gameplay Variables")]
@@ -53,9 +53,10 @@ namespace Enemy {
             _agent.acceleration = _maxAcceleration;
             _agent.speed = _maxSpeed;
             _agent.stoppingDistance = _attackRange - 0.5f;
+            _agent.angularSpeed = _maxTurnSpeed;
             _enemyManager = transform.parent.GetComponent<EnemyManager>();
             _emitter = GetComponent<SFXEmitter>();
-            _attackTimer = new CountDownTimer(_attackSpeed);
+            _attackTimer = new CountDownTimer(_attackDuration);
         }
 
         public void Start() {
@@ -66,6 +67,8 @@ namespace Enemy {
             }
             _state?.Start();
             Health health = GetComponent<Health>();
+            health.Init(100f, 10f);
+            _attackTimer.Start();
             // health.OnDamage += (float amount) => GameManager.Instance.ResetCombatTimer();
             // health.OnDamage += (float damage) => GameManager.Instance.CameraShake(intensity: damage);
             // health.OnDamage += (float damage) => _emitter.Play(SoundEffectType.HIT);

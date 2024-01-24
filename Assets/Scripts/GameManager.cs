@@ -20,7 +20,7 @@ public class GameManager : Singleton<GameManager> {
     [SerializeField] private CanvasGroup _winScreen;
     [SerializeField] private CanvasGroup _loseScreen;
     [SerializeField] private TickSystem _tickSystem;
-    [SerializeField] private EnemyManager[] _enemyManagers = null;
+    //[SerializeField] private EnemyManager[] _enemyManagers = null;
     [SerializeField] private CountDownTimer _combatTimer = new CountDownTimer(0f);
     [SerializeField] private CinemachineBasicMultiChannelPerlin _cameraNoise;
     [SerializeField] private CinemachineVirtualCamera _virtualCamera;
@@ -29,10 +29,10 @@ public class GameManager : Singleton<GameManager> {
     [SerializeField] private ChromaticAberration _chromaticAberration;
     [SerializeField] private GameObject _tutorialManager;
     private float _initialCameraSize;
-    private Coroutine _endGameState = null;
+    //private Coroutine _endGameState = null;
 
     private void Start() {
-        _enemyManagers = FindObjectsOfType<EnemyManager>();
+        //_enemyManagers = FindObjectsOfType<EnemyManager>();
         _tickSystem = gameObject.GetOrAddComponent<TickSystem>();
         // _tickSystem.TickLoop += HandleEndGame;
         _tickSystem.TickLoop += (float deltaTime) => _combatTimer.Update(deltaTime);
@@ -107,63 +107,62 @@ public class GameManager : Singleton<GameManager> {
         yield return Yielders.WaitForSeconds(time);
         _cameraNoise.m_AmplitudeGain = 0f;
         yield return Yielders.WaitForEndOfFrame;
-        _virtualCamera.transform.rotation = Quaternion.identity;
     }
 
-    public bool GameEnd => BossDead && SpawnersFinished;
-    private bool SpawnersFinished {
-        get {
-            foreach (EnemyManager enemyManager in _enemyManagers) {
-                if (!enemyManager.FinishedSpawning) {
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
-    private void HandleEndGame(float dt) {
-        if (_endGameState != null) {
-            return;
-        }
-        // if (GameEnd) {
-        //     _endGameState = StartCoroutine(WinState());
-        // } else if (!PlayerAlive) {
-        //     _endGameState = StartCoroutine(LoseState());
-        // }
-    }
+    //public bool GameEnd => BossDead && SpawnersFinished;
+    //private bool SpawnersFinished {
+    //    get {
+    //        foreach (EnemyManager enemyManager in _enemyManagers) {
+    //            if (!enemyManager.FinishedSpawning) {
+    //                return false;
+    //            }
+    //        }
+    //        return true;
+    //    }
+    //}
+    //private void HandleEndGame(float dt) {
+    //    if (_endGameState != null) {
+    //        return;
+    //    }
+    //    // if (GameEnd) {
+    //    //     _endGameState = StartCoroutine(WinState());
+    //    // } else if (!PlayerAlive) {
+    //    //     _endGameState = StartCoroutine(LoseState());
+    //    // }
+    //}
 
-    private IEnumerator WinState() {
-        ToggleWinScreen(true);
-        yield return Yielders.WaitForSeconds(2f);
-        SceneManager.LoadScene(0);
-    }
+    //private IEnumerator WinState() {
+    //    ToggleWinScreen(true);
+    //    yield return Yielders.WaitForSeconds(2f);
+    //    SceneManager.LoadScene(0);
+    //}
 
-    private void ToggleWinScreen(bool toggle) {
-        _winScreen.interactable = toggle;
-        _winScreen.alpha = toggle ? 1f : 0f;
-    }
+    //private void ToggleWinScreen(bool toggle) {
+    //    _winScreen.interactable = toggle;
+    //    _winScreen.alpha = toggle ? 1f : 0f;
+    //}
 
-    private IEnumerator LoseState() {
-        ToggleLoseScreen(true);
-        yield return Yielders.WaitForSeconds(2f);
-        SceneManager.LoadScene(0);
-    }
+    //private IEnumerator LoseState() {
+    //    ToggleLoseScreen(true);
+    //    yield return Yielders.WaitForSeconds(2f);
+    //    SceneManager.LoadScene(0);
+    //}
 
-    private void ToggleLoseScreen(bool toggle) {
-        _loseScreen.interactable = toggle;
-        _loseScreen.alpha = toggle ? 1f : 0f;
-    }
+    //private void ToggleLoseScreen(bool toggle) {
+    //    _loseScreen.interactable = toggle;
+    //    _loseScreen.alpha = toggle ? 1f : 0f;
+    //}
 
-    public void MainMenu() {
-        SceneManager.LoadScene(0);
-    }
+    //public void MainMenu() {
+    //    SceneManager.LoadScene(0);
+    //}
 
-    public void ResetCombatTimer() {
-        _combatTimer.Reset(5f);
-        _combatTimer.Start();
-    }
+    //public void ResetCombatTimer() {
+    //    _combatTimer.Reset(5f);
+    //    _combatTimer.Start();
+    //}
 
-    public void StartTutorial() {
-        Instantiate(_tutorialManager, Vector3.zero, Quaternion.identity);
-    }
+    //public void StartTutorial() {
+    //    Instantiate(_tutorialManager, Vector3.zero, Quaternion.identity);
+    //}
 }

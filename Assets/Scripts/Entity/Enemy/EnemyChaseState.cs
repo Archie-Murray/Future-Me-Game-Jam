@@ -9,8 +9,7 @@ namespace Enemy {
             _controller.Agent.destination = _enemyManager.Target.position;
         }
         public override void FixedUpdate() {
-            _controller.Animator.SetFloat(_controller.SpeedHash, _controller.Agent.velocity.magnitude / _controller.Agent.speed);
-            Debug.Log($"Speed Percent: {Mathf.Clamp01(_controller.Agent.velocity.magnitude / _controller.Agent.speed):0%}");
+            _controller.Animator.SetFloat(_controller.SpeedHash, Mathf.Clamp01(_controller.Agent.velocity.magnitude / _controller.Agent.speed));
             _controller.Agent.destination = _enemyManager.Target.position;
         }
         public override void CheckTransitions() {
@@ -18,7 +17,7 @@ namespace Enemy {
                 SwitchState(_enemyStateFactory.State<EnemyIdleState>());
                 return;
             }
-            if (_controller.InAttackRange) {
+            if (_controller.InAttackRange && _controller.AttackTimer.IsFinished) {
                 SwitchState(_enemyStateFactory.State<EnemyAttackState>());
             }
         }

@@ -13,12 +13,12 @@ public class MixamoImporter : EditorWindow {
     private Vector2 _scrollPos;
 
     private static Settings _settings = new Settings();
-    private const string _settingsPrefsPath = nameof(MixamoImporter) + "_lastsettings";
+    private const string SettingsPrefsPath = nameof(MixamoImporter) + "_lastsettings";
     private static Color _linecolor = new Color32(128, 128, 128, 64);
     [System.Serializable]
     private class Settings {
-        public string path = string.Empty;
-        public bool renameAnimClips = true;
+        public string Path = string.Empty;
+        public bool RenameAnimClips = true;
         public bool renameAnimClipsUnderscores = true;
         public bool renameAnimClipsToLower = true;
         public bool changeLoopAnimClips = true;
@@ -40,7 +40,7 @@ public class MixamoImporter : EditorWindow {
         public bool disableMaterialImport = true;
         public bool mirror = false;
         public bool setRigToHumanoid = true;
-        public Avatar rigCustomAvatar;
+        public Avatar RigCustomAvatar;
     }
 
     [MenuItem("Window/Animation/Mixamo Batch Import")]
@@ -55,7 +55,7 @@ public class MixamoImporter : EditorWindow {
 
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Select directory")) {
-            _settings.path = EditorUtility.OpenFolderPanel("Select directory with files", "", "");
+            _settings.Path = EditorUtility.OpenFolderPanel("Select directory with files", "", "");
         }
         if (GUILayout.Button("Reset settings")) {
             _settings = new Settings();
@@ -63,10 +63,10 @@ public class MixamoImporter : EditorWindow {
         }
         EditorGUILayout.EndHorizontal();
 
-        GUILayout.Label($"Path: {_settings.path} ", EditorStyles.boldLabel);
+        GUILayout.Label($"Path: {_settings.Path} ", EditorStyles.boldLabel);
         GUILayout.Label($"Selected: {Selection.gameObjects.Length} assets", EditorStyles.boldLabel);
 
-        bool pathvalid = !string.IsNullOrEmpty(_settings.path) && Directory.Exists(_settings.path);
+        bool pathvalid = !string.IsNullOrEmpty(_settings.Path) && Directory.Exists(_settings.Path);
         if (!pathvalid) {
             GUI.color = Color.red;
             GUILayout.Label("Path invalid", EditorStyles.boldLabel);
@@ -74,7 +74,7 @@ public class MixamoImporter : EditorWindow {
         }
 
         DrawUILine();
-        _settings.renameAnimClips = EditorGUILayout.BeginToggleGroup("Rename animation clips to filename", _settings.renameAnimClips);
+        _settings.RenameAnimClips = EditorGUILayout.BeginToggleGroup("Rename animation clips to filename", _settings.RenameAnimClips);
         {
             _settings.renameAnimClipsUnderscores = EditorGUILayout.Toggle("Spaces to underscores", _settings.renameAnimClipsUnderscores);
             _settings.renameAnimClipsToLower = EditorGUILayout.Toggle("To lowercase", _settings.renameAnimClipsToLower);
@@ -131,7 +131,7 @@ public class MixamoImporter : EditorWindow {
         _settings.setRigToHumanoid = EditorGUILayout.Toggle("Set Rig to Humanoid", _settings.setRigToHumanoid);
         _settings.disableMaterialImport = EditorGUILayout.Toggle("Disable Material Import", _settings.disableMaterialImport);
         _settings.mirror = EditorGUILayout.Toggle("Mirror", _settings.mirror);
-        _settings.rigCustomAvatar = EditorGUILayout.ObjectField("Custom Avatar", _settings.rigCustomAvatar, typeof(Avatar), false) as Avatar;
+        _settings.RigCustomAvatar = EditorGUILayout.ObjectField("Custom Avatar", _settings.RigCustomAvatar, typeof(Avatar), false) as Avatar;
 
         GUILayout.Space(30);
         DrawUILine();
@@ -155,16 +155,16 @@ public class MixamoImporter : EditorWindow {
 
     private static void SaveSettings() {
         string json = EditorJsonUtility.ToJson(_settings);
-        EditorPrefs.SetString(_settingsPrefsPath, json);
+        EditorPrefs.SetString(SettingsPrefsPath, json);
     }
 
     private static void LoadSettings() {
-        _settings = JsonUtility.FromJson<Settings>(EditorPrefs.GetString(_settingsPrefsPath));
+        _settings = JsonUtility.FromJson<Settings>(EditorPrefs.GetString(SettingsPrefsPath));
         _settings ??= new Settings();
     }
 
     public void process_dir() {
-        DirSearch(_settings.path);
+        DirSearch(_settings.Path);
 
         if (_allFiles.Count > 0) {
             for (int i = 0; i < _allFiles.Count; i++) {
@@ -245,8 +245,8 @@ public class MixamoImporter : EditorWindow {
         if (_settings.setRigToHumanoid)
             modelImporter.animationType = ModelImporterAnimationType.Human;
 
-        if (_settings.rigCustomAvatar != null)
-            modelImporter.sourceAvatar = _settings.rigCustomAvatar;
+        if (_settings.RigCustomAvatar != null)
+            modelImporter.sourceAvatar = _settings.RigCustomAvatar;
 
         if (_settings.renameAnimClipsUnderscores)
             name = name.Replace(' ', '_');
@@ -257,7 +257,7 @@ public class MixamoImporter : EditorWindow {
         for (int i = 0; i < clipAnimations.Length; i++) {
             ModelImporterClipAnimation clip = clipAnimations[i];
 
-            if (_settings.renameAnimClips)
+            if (_settings.RenameAnimClips)
                 clip.name = name;
             if (_settings.changeLoopAnimClips) {
                 clip.loopTime = _settings.loopAnimClipsTime;

@@ -8,6 +8,7 @@ using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+
 using Utilities;
 
 [RequireComponent(typeof(CharacterController))]
@@ -20,12 +21,12 @@ public class PlayerController : MonoBehaviour {
 
     [Header("Component References")]
     [SerializeField] private CharacterController _controller;
-    [SerializeField] private InputHandler _inputHandler;  
+    [SerializeField] private InputHandler _inputHandler;
     [SerializeField] private Health _health;
     [SerializeField] private SFXEmitter _emitter;
     [SerializeField] private Stats _stats;
     [SerializeField] private Animator _animator;
-    
+
     [Header("Player Variables")]
     [SerializeField] private float _maxSpeed = 5f;
     [SerializeField] private float _sprintSpeed = 7f;
@@ -35,6 +36,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Vector3 _input;
     [SerializeField] private CountDownTimer _lightAttack;
     [SerializeField] private CountDownTimer _heavyAttack;
+    [SerializeField] private float _attackRadius = 2f;
 
     [Header("Gameplay Variables")]
     [SerializeField] private float _speed;
@@ -47,7 +49,6 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private CountDownTimer _dashTimer;
     [SerializeField] private bool _dashPressed = false; //Need to make sure this is consumed in FixedUpdate
     [SerializeField] private float _brakeForce = 20f;
-    private float _attackRadius;
     private readonly int SpeedHash = Animator.StringToHash("Speed");
     private readonly int LightHash = Animator.StringToHash("Light");
     private readonly int HeavyHash = Animator.StringToHash("Heavy");
@@ -71,10 +72,10 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Start() {
-        _health.OnDamage += (float amount) => _emitter.Play(SoundEffectType.HIT, amount);
-        _health.OnDeath += () => { _emitter.Play(SoundEffectType.DESTROY); GameManager.Instance.PlayerAlive = false; };
-        _health.OnDamage += (float amount) => GameManager.Instance.ResetCombatTimer();
-        _health.OnDamage += (float amount) => GameManager.Instance.CameraShake(intensity: amount);
+        //_health.OnDamage += (float amount) => _emitter.Play(SoundEffectType.HIT, amount);
+        //_health.OnDeath += () => { _emitter.Play(SoundEffectType.DESTROY); GameManager.Instance.PlayerAlive = false; };
+        //_health.OnDamage += (float amount) => GameManager.Instance.ResetCombatTimer();
+        //_health.OnDamage += (float amount) => GameManager.Instance.CameraShake(intensity: amount);
     }
 
     private void Update() {
@@ -91,7 +92,7 @@ public class PlayerController : MonoBehaviour {
                 LightAttack();
             }
         }
-        
+
         if (_inputHandler.IsDashPressed && _dashTimer.IsFinished) {
             _dashPressed = true;
         }
@@ -99,17 +100,23 @@ public class PlayerController : MonoBehaviour {
 
     private void LightAttack() {
         _animator.SetTrigger(LightHash);
-        Health[] healths = Array.ConvertAll(Physics.OverlapSphere(transform.position, _attackRadius, Globals.Instance.EnemyLayer).Where((Collider collider) => collider.gameObject.HasComponent<EnemyController>()).ToArray(), (Collider collider) => collider.GetComponent<Health>());
-        foreach (Health health in healths) {
-            health.Damage(_stats.GetStat(StatType.ATTACK_DAMAGE));
+        foreach (Collider collider in Physics.OverlapSphere(transform.position, _attackRadius, Globals.Instance.EnemyLayer)) {
+            if (collider.TryGetComponent(out Health enemyHealth)) {
+                Debug.Log($"Light attack on enemy {enemyHealth.name}");
+                enemyHealth.Damage(_stats.GetStat(StatType.ATTACK_DAMAGE));
+            } else {
+                Debug.Log($"{collider.name} was not an enemy");
+            }
         }
     }
 
     private void HeavyAttack() {
         _animator.SetTrigger(HeavyHash);
-        Health[] healths = Array.ConvertAll(Physics.OverlapSphere(transform.position, _attackRadius, Globals.Instance.EnemyLayer).Where((Collider collider) => collider.gameObject.HasComponent<EnemyController>()).ToArray(), (Collider collider) => collider.GetComponent<Health>());
-        foreach (Health health in healths) {
-            health.Damage(_stats.GetStat(StatType.ATTACK_DAMAGE) * 1.5f);
+        foreach (Collider collider in Physics.OverlapSphere(transform.position, _attackRadius, Globals.Instance.EnemyLayer)) {
+            if (collider.TryGetComponent(out Health enemyHealth)) {
+                Debug.Log($"Heavy attack on enemy {enemyHealth.name}");
+                enemyHealth.Damage(_stats.GetStat(StatType.ATTACK_DAMAGE) * 1.5f);
+            }
         }
     }
 
