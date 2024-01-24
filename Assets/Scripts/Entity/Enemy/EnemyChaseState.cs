@@ -10,6 +10,7 @@ namespace Enemy {
         }
         public override void FixedUpdate() {
             _controller.Animator.SetFloat(_controller.SpeedHash, _controller.Agent.velocity.magnitude / _controller.Agent.speed);
+            Debug.Log($"Speed Percent: {Mathf.Clamp01(_controller.Agent.velocity.magnitude / _controller.Agent.speed):0%}");
             _controller.Agent.destination = _enemyManager.Target.position;
         }
         public override void CheckTransitions() {

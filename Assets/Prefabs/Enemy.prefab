@@ -166,8 +166,8 @@ MonoBehaviour:
   _enemyManager: {fileID: 0}
   _emitter: {fileID: 0}
   _animator: {fileID: 0}
-  _maxSpeed: 200
-  _maxAcceleration: 60
+  _maxSpeed: 5
+  _maxAcceleration: 4
   _maxTurnSpeed: 5
   _chaseRange: 10
   _attackRange: 1
