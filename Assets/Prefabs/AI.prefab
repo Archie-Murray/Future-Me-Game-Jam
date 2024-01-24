@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6295664205552415951}
   - component: {fileID: 3940465507294810776}
+  - component: {fileID: 7476480661194906280}
   m_Layer: 0
   m_Name: AI
   m_TagString: Untagged
@@ -45,18 +46,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 718db859df6890ce1949e46792219648, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wanderPoints: []
   _spawnPoints: []
   _target: {fileID: 0}
   _spawnCount: 0
   _maxSpawnCount: 10
-  _enemyProjectile: {fileID: 0}
   _enemySpawner:
     _enemyPrefab: {fileID: 0}
   _spawnTimer:
     _initialTime: 5
     _time: 0
   _enemyPrefab: {fileID: 0}
+--- !u!95 &7476480661194906280
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7625259408403460439}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 1fb1fec07e334be0cb2a5eb1a32b5067, type: 3}
+  m_Controller: {fileID: 9100000, guid: d112156f3333b19fbbbdae83585b436a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &31079181811093818
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -138,6 +158,18 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 4877347009983212189}
+    - targetCorrespondingSourceObject: {fileID: 894988792108881036, guid: 47258c69ee4c9b24fa6043f0b8c783f1,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5377386666647291897}
+    - targetCorrespondingSourceObject: {fileID: 894988792108881036, guid: 47258c69ee4c9b24fa6043f0b8c783f1,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7577138764231226391}
+    - targetCorrespondingSourceObject: {fileID: 894988792108881036, guid: 47258c69ee4c9b24fa6043f0b8c783f1,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 733664527650351220}
   m_SourcePrefab: {fileID: 100100000, guid: 47258c69ee4c9b24fa6043f0b8c783f1, type: 3}
 --- !u!4 &526386132240949004 stripped
 Transform:
@@ -188,13 +220,66 @@ MonoBehaviour:
   _agent: {fileID: 0}
   _enemyManager: {fileID: 0}
   _emitter: {fileID: 0}
+  _animator: {fileID: 0}
   _maxSpeed: 200
   _maxAcceleration: 60
   _maxTurnSpeed: 5
   _chaseRange: 10
   _attackRange: 5
-  _fireRate: 1
+  _attackSpeed: 3.7
   _damage: 1
   _attackTimer:
     _initialTime: 0
     _time: 0
+--- !u!114 &5377386666647291897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866320370080777654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edf0e57e309bedb47b03dade6e82a25b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _effects: 
+--- !u!95 &7577138764231226391
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866320370080777654}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &733664527650351220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 866320370080777654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee62d3dbae0f907b289a476f1e0ea48b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 100
+  _currentHealth: 0
+  _defence: 0
+  _deathTimer: 0.25
+  _isInvulnerable: 0
+  _originalColour: {r: 0, g: 0, b: 0, a: 0}
