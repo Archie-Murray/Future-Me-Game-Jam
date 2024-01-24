@@ -45,7 +45,7 @@ public class Health : MonoBehaviour {
         if (_currentHealth < 0f) {
             return;
         }
-        amount = Mathf.Max(amount - _defence, 0f);
+        amount *= DefenceToMultiplier(_defence);
         _currentHealth = Mathf.Max(_currentHealth - amount, 0f);
         OnDamage?.Invoke(amount);
         if (_currentHealth == 0f) {
