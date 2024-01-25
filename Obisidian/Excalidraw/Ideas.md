@@ -138,9 +138,9 @@ Wave Survival ^v7mtZTfw
 		},
 		{
 			"type": "freedraw",
-			"version": 83,
-			"versionNonce": 296465790,
-			"isDeleted": false,
+			"version": 87,
+			"versionNonce": 1164693021,
+			"isDeleted": true,
 			"id": "c_fpUUtJZKEZU2wpqEvug",
 			"fillStyle": "solid",
 			"strokeWidth": 2,
@@ -148,8 +148,8 @@ Wave Survival ^v7mtZTfw
 			"roughness": 1,
 			"opacity": 100,
 			"angle": 0,
-			"x": 211.09976196289062,
-			"y": -61.36328125,
+			"x": 213.99042231009003,
+			"y": -60.39972780093353,
 			"strokeColor": "#1e1e1e",
 			"backgroundColor": "transparent",
 			"width": 325.5,
@@ -159,7 +159,7 @@ Wave Survival ^v7mtZTfw
 			"frameId": null,
 			"roundness": null,
 			"boundElements": [],
-			"updated": 1706006996116,
+			"updated": 1706195038039,
 			"link": null,
 			"locked": false,
 			"points": [
@@ -512,10 +512,10 @@ Wave Survival ^v7mtZTfw
 		"currentItemTextAlign": "left",
 		"currentItemStartArrowhead": null,
 		"currentItemEndArrowhead": "arrow",
-		"scrollX": 186.7001190185547,
-		"scrollY": 328.62109375,
+		"scrollX": 133.70680837565482,
+		"scrollY": 311.9131714792498,
 		"zoom": {
-			"value": 2
+			"value": 2.2451131055225626
 		},
 		"currentItemRoundness": "round",
 		"gridSize": null,

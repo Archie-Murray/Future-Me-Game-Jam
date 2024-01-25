@@ -4,6 +4,7 @@ namespace Upgrades {
     [CreateAssetMenu(menuName = "Upgrade")]
     public class Upgrade : ScriptableObject {
         public Sprite Icon;
+        public Color IconColor;
         public StatType Type;
         public float Amount;
         public string Description;

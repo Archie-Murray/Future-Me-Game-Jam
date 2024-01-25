@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Damage
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: 3b74b2e3bb94cbb69bf45d160c90a9e1, type: 3}
+  IconColor: {r: 1, g: 0, b: 0, a: 1}
   Type: 0
   Amount: 10
   Description: Increase attack damage by 10

@@ -76,6 +76,7 @@ namespace Upgrades {
 
             public void SetUpgrade(Upgrade upgrade) {
                 UpgradeImage.sprite = upgrade.Icon;
+                UpgradeImage.color = upgrade.IconColor;
                 Text.text = upgrade.Description;
                 UpgradeButton.onClick.RemoveAllListeners();
                 UpgradeButton.onClick.AddListener(() => ApplyUpgrade(upgrade));
