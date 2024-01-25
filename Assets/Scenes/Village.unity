@@ -346,6 +346,16 @@ PrefabInstance:
       propertyPath: m_text
       value: caramel dancing
       objectReference: {fileID: 0}
+    - target: {fileID: 840213351603875280, guid: 94d802f480f669a419ca839d4f0d45e7,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 840213351603875280, guid: 94d802f480f669a419ca839d4f0d45e7,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 1308954651856966033, guid: 94d802f480f669a419ca839d4f0d45e7,
         type: 3}
       propertyPath: m_Sprite
@@ -377,6 +387,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -473.8
       objectReference: {fileID: 0}
+    - target: {fileID: 1446045099798001827, guid: 94d802f480f669a419ca839d4f0d45e7,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 28.8
+      objectReference: {fileID: 0}
     - target: {fileID: 2002070781231287134, guid: 94d802f480f669a419ca839d4f0d45e7,
         type: 3}
       propertyPath: m_Name
@@ -406,6 +421,16 @@ PrefabInstance:
         type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Emotemanager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4512874073699648978, guid: 94d802f480f669a419ca839d4f0d45e7,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4512874073699648978, guid: 94d802f480f669a419ca839d4f0d45e7,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4909721846576289861, guid: 94d802f480f669a419ca839d4f0d45e7,
         type: 3}
@@ -451,6 +476,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -387.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7839214558192114836, guid: 94d802f480f669a419ca839d4f0d45e7,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 27.3
       objectReference: {fileID: 0}
     - target: {fileID: 8509891383102176986, guid: 94d802f480f669a419ca839d4f0d45e7,
         type: 3}
@@ -1675,8 +1705,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4716,8 +4746,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
