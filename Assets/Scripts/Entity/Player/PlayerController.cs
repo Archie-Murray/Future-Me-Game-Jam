@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float _speed;
 
     [Header("UI")]
+    public bool AllowInput;
 
     [Header("Movement Abilities")]
     [SerializeField] private float _dashCooldown = 2f;
@@ -89,7 +90,7 @@ public class PlayerController : MonoBehaviour {
             return;
         }
 
-        if (IsIdle) {
+        if (IsIdle && AllowInput) {
             if (_inputHandler.HeavyFireInput) {
                 _heavyAttack.Start();
                 HeavyAttack();
