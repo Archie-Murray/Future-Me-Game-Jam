@@ -1,7 +1,10 @@
 using System;
 using System.Linq;
 
+using TMPro;
+
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Upgrades {
@@ -28,9 +31,15 @@ namespace Upgrades {
                 _upgradeSlots[i] = new UpgradeUI(
                     slot.GetComponentInChildren<Button>(),
                     slot.GetComponentsInChildren<Image>().First((Image image) => image.name == "Icon"),
+                    slot.GetComponentInChildren<TMP_Text>(),
                     this
                 );
+                _upgradeSlots[i].UpgradeImage.sprite = _defaultIcon;
             }
+        }
+
+        private void Start() {
+            Globals.Instance.Controls.UI.OpenUpgrades.started += (InputAction.CallbackContext context) => ShowUpgrades();
         }
 
         // Want to call this when the player gets enough xp to level up
@@ -55,22 +64,26 @@ namespace Upgrades {
         [Serializable] private class UpgradeUI {
             public Button UpgradeButton;
             public Image UpgradeImage;
+            public TMP_Text Text;
             public UpgradeManager UpgradeManager;
 
-            public UpgradeUI(Button upgradeButton, Image upgradeImage, UpgradeManager upgradeManager) {
+            public UpgradeUI(Button upgradeButton, Image upgradeImage, TMP_Text text, UpgradeManager upgradeManager) {
                 UpgradeButton = upgradeButton;
                 UpgradeImage = upgradeImage;
+                Text = text;
                 UpgradeManager = upgradeManager;
             }
 
             public void SetUpgrade(Upgrade upgrade) {
                 UpgradeImage.sprite = upgrade.Icon;
+                Text.text = upgrade.Description;
                 UpgradeButton.onClick.RemoveAllListeners();
                 UpgradeButton.onClick.AddListener(() => ApplyUpgrade(upgrade));
             }
 
             public void UnsetUpgrade() {
                 UpgradeImage.sprite = UpgradeManager._defaultIcon;
+                Text.text = string.Empty;
                 UpgradeButton.onClick.RemoveAllListeners();
             }
 
