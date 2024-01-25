@@ -308,7 +308,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "OpenUpgrades",
+                    "name": "OpenStats",
                     "type": "Button",
                     "id": "2b0c2160-b9c3-409d-8701-bc4f882f83a5",
                     "expectedControlType": "Button",
@@ -748,11 +748,11 @@
                 {
                     "name": "",
                     "id": "499e1ff7-6967-4ba1-84e9-72cd830f887e",
-                    "path": "<Keyboard>/u",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "OpenUpgrades",
+                    "action": "OpenStats",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

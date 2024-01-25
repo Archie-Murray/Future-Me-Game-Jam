@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour {
 
     [Header("Gameplay Variables")]
     [SerializeField] private float _speed;
+    [SerializeField] private Vector3 _lookDiff;
 
     [Header("UI")]
     public bool AllowInput;
@@ -121,6 +122,16 @@ public class PlayerController : MonoBehaviour {
         _animator.speed = _animationTimes[1] * _stats.GetStat(StatType.ATTACK_SPEED) / 1.5f;
     }
 
+    public string GetStatus() {
+        return 
+            $"Health: {_health.CurrentHealth} / {_health.MaxHealth} ({_health.PercentHealth:0%})\n" +
+            $"Defence: {_stats.GetStat(StatType.DEFENCE)}\n" +
+            $"Speed: {_stats.GetStat(StatType.MOVE_SPEED)}\n" +
+            $"Attack Damage: {_stats.GetStat(StatType.ATTACK_DAMAGE)}\n" +
+            $"Attack Speed: {_stats.GetStat(StatType.ATTACK_SPEED)}\n"
+        ;
+    }
+
     private void EndAttack() {
         _entityDamager.EndAttack();
         _animator.speed = 1f;
@@ -156,9 +167,9 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void RotateToMouse() {
-        Vector3 diff = (_inputHandler.WorldMousePosition - transform.position).normalized;
-        diff.y = 0f;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(diff), Time.fixedDeltaTime * _rotationSpeed);
+        _lookDiff = (_inputHandler.WorldMousePosition - transform.position).normalized;
+        _lookDiff.y = 0f;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_lookDiff), Time.fixedDeltaTime * _rotationSpeed);
     }
 
     private void Move() {

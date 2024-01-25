@@ -38,10 +38,6 @@ namespace Upgrades {
             }
         }
 
-        private void Start() {
-            Globals.Instance.Controls.UI.OpenUpgrades.started += (InputAction.CallbackContext context) => ShowUpgrades();
-        }
-
         // Want to call this when the player gets enough xp to level up
         public void ShowUpgrades() {
             _uiCanvas.FadeCanvas(0.25f, false, this);

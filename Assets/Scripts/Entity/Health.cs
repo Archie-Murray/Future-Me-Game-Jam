@@ -24,6 +24,10 @@ public class Health : MonoBehaviour {
 
     }
 
+    public string GetHealthText() {
+        return $"{_currentHealth:0} / {_maxHealth:0} ({PercentHealth:0%})";
+    }
+
     public static float DefenceToMultiplier(float defence) {
         return defence < 0.0f ? 2.0f - (100.0f / (100.0f - defence)) : 100.0f / (100.0f + defence);
     }
