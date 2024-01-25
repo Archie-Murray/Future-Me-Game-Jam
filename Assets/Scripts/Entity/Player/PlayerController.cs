@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private SFXEmitter _emitter;
     [SerializeField] private Stats _stats;
     [SerializeField] private Animator _animator;
+    [SerializeField] private EntityDamager _entityDamager;
 
     [Header("Player Variables")]
     [SerializeField] private float _maxSpeed = 5f;
@@ -52,6 +53,7 @@ public class PlayerController : MonoBehaviour {
     private readonly int SpeedHash = Animator.StringToHash("Speed");
     private readonly int LightHash = Animator.StringToHash("Light");
     private readonly int HeavyHash = Animator.StringToHash("Heavy");
+    [SerializeField] private float[] _animationTimes = new float[2];
 
     public float SpeedPercent => Mathf.Clamp01(_speed / _maxSpeed);
     private bool IsIdle => !_lightAttack.IsRunning && !_heavyAttack.IsRunning;
@@ -59,16 +61,20 @@ public class PlayerController : MonoBehaviour {
     private void Awake() {
         _controller = GetComponent<CharacterController>();
         _inputHandler = GetComponent<InputHandler>();
+        _entityDamager = GetComponentInChildren<EntityDamager>();
         _emitter = GetComponent<SFXEmitter>();
         _stats = GetComponent<Stats>();
         _lightAttack = new CountDownTimer(1f / _stats.GetStat(StatType.ATTACK_SPEED));
+        _lightAttack.OnTimerStop += _entityDamager.EndAttack;
         _heavyAttack = new CountDownTimer(1.5f / _stats.GetStat(StatType.ATTACK_SPEED));
+        _heavyAttack.OnTimerStop += _entityDamager.EndAttack;
         _animator = GetComponent<Animator>();
         _health = GetComponent<Health>();
         _health.Init(_stats.GetStat(StatType.MAX_HEALTH), _stats.GetStat(StatType.DEFENCE));
         _stats.OnStatChange += _health.UpdateHealthAndDefence;
         _dashTimer = new CountDownTimer(_dashCooldown);
         _dashTimer.Start();
+        _entityDamager.OnHit += Attack;
     }
 
     private void Start() {
@@ -100,24 +106,43 @@ public class PlayerController : MonoBehaviour {
 
     private void LightAttack() {
         _animator.SetTrigger(LightHash);
-        foreach (Collider collider in Physics.OverlapSphere(transform.position, _attackRadius, Globals.Instance.EnemyLayer)) {
-            if (collider.TryGetComponent(out Health enemyHealth)) {
-                Debug.Log($"Light attack on enemy {enemyHealth.name}");
-                enemyHealth.Damage(_stats.GetStat(StatType.ATTACK_DAMAGE));
-            } else {
-                Debug.Log($"{collider.name} was not an enemy");
-            }
-        }
+        _entityDamager.StartAttack();
+        _lightAttack.Reset();
+        _lightAttack.Start();
+        _animator.speed = _animationTimes[0] * _stats.GetStat(StatType.ATTACK_SPEED);
     }
 
     private void HeavyAttack() {
         _animator.SetTrigger(HeavyHash);
-        foreach (Collider collider in Physics.OverlapSphere(transform.position, _attackRadius, Globals.Instance.EnemyLayer)) {
-            if (collider.TryGetComponent(out Health enemyHealth)) {
-                Debug.Log($"Heavy attack on enemy {enemyHealth.name}");
-                enemyHealth.Damage(_stats.GetStat(StatType.ATTACK_DAMAGE) * 1.5f);
-            }
+        _entityDamager.StartAttack();
+        _heavyAttack.Reset();
+        _heavyAttack.Start();
+        _animator.speed = _animationTimes[1] * _stats.GetStat(StatType.ATTACK_SPEED) / 1.5f;
+    }
+
+    private void EndAttack() {
+        _entityDamager.EndAttack();
+        _animator.speed = 1f;
+    }
+
+    private void Attack(Health health, Vector3 position) {
+        if (_lightAttack.IsRunning) {
+            LightAttackHit(health, position);
+        } else if (_heavyAttack.IsRunning) {
+            HeavyAttackHit(health, position);
         }
+    }
+
+    private void LightAttackHit(Health enemyHealth, Vector3 position) {
+        Debug.Log($"Light attack on enemy {enemyHealth.name}");
+        enemyHealth.Damage(_stats.GetStat(StatType.ATTACK_DAMAGE));
+        Instantiate(Assets.Instance.HitParticles, position, enemyHealth.transform.rotation);
+    }
+
+    private void HeavyAttackHit(Health enemyHealth, Vector3 position) {
+        Debug.Log($"Light attack on enemy {enemyHealth.name}");
+        enemyHealth.Damage(_stats.GetStat(StatType.ATTACK_DAMAGE));
+        Instantiate(Assets.Instance.HitParticles, position, enemyHealth.transform.rotation);
     }
 
     private void FixedUpdate() {

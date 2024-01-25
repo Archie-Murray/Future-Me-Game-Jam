@@ -42,11 +42,7 @@ namespace Enemy {
 
         public void Attack() {
             _controller.Animator.SetTrigger(_controller.AttackHash);
-            Collider player = Physics.OverlapSphere(_controller.transform.position, _controller.AttackRange, Globals.Instance.PlayerLayer).FirstOrDefault();
-            if (player.TryGetComponent(out Health playerHealth)) {
-                playerHealth.Damage(_controller.Damage);
-                // Create hit particles
-            }
+            _controller.EntityDamager.StartAttack();
             _controller.AttackTimer.Reset();
             _controller.AttackTimer.Start();
         }
