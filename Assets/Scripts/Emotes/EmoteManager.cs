@@ -37,7 +37,6 @@ public class EmoteManager : MonoBehaviour {
                 _playerController.AllowInput = true;
                 _animator.SetTrigger(_emoteDisabledHash);
             }
-            Debug.Log(_emoteID);
         }
     }
 
