@@ -145,6 +145,27 @@ public static class Extensions {
         spriteRenderer.color = originalColour;
     }
 
+    public static void FadeCanvas(this CanvasGroup canvasGroup, float duration, bool fadeToTransparent, MonoBehaviour monoBehaviour) {
+        monoBehaviour.StartCoroutine(CanvasFade(canvasGroup, duration, fadeToTransparent));
+    }
+
+    private static IEnumerator CanvasFade(CanvasGroup canvasGroup, float duration, bool fadeToTransparent) {
+        CountDownTimer timer = new CountDownTimer(duration);
+        timer.Start();
+        while (timer.IsRunning) {
+            canvasGroup.alpha = fadeToTransparent ? timer.Progress : 1f - timer.Progress;
+            timer.Update(Time.fixedDeltaTime);
+            yield return Yielders.WaitForFixedUpdate;
+        }
+        if (fadeToTransparent) {
+            canvasGroup.interactable = false;
+            canvasGroup.alpha = 0f;
+        } else {
+            canvasGroup.interactable = true;
+            canvasGroup.alpha = 1f;
+        }
+    }
+
     [Serializable]
     public struct DictKeyValue<TKey, TValue> {
         public TKey Key;

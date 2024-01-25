@@ -328,6 +328,24 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenStats"",
+                    ""type"": ""Button"",
+                    ""id"": ""2b0c2160-b9c3-409d-8701-bc4f882f83a5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenEmotes"",
+                    ""type"": ""Button"",
+                    ""id"": ""84a17e19-d9b1-4bdc-9caa-9c9e3709dccf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -748,6 +766,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""TrackedDeviceOrientation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""499e1ff7-6967-4ba1-84e9-72cd830f887e"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenStats"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""37dd041f-c0ee-4efd-968e-1c73cca7b57e"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenEmotes"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -776,6 +816,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        m_UI_OpenStats = m_UI.FindAction("OpenStats", throwIfNotFound: true);
+        m_UI_OpenEmotes = m_UI.FindAction("OpenEmotes", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -949,6 +991,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_RightClick;
     private readonly InputAction m_UI_TrackedDevicePosition;
     private readonly InputAction m_UI_TrackedDeviceOrientation;
+    private readonly InputAction m_UI_OpenStats;
+    private readonly InputAction m_UI_OpenEmotes;
     public struct UIActions
     {
         private @Controls m_Wrapper;
@@ -963,6 +1007,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
         public InputAction @TrackedDevicePosition => m_Wrapper.m_UI_TrackedDevicePosition;
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
+        public InputAction @OpenStats => m_Wrapper.m_UI_OpenStats;
+        public InputAction @OpenEmotes => m_Wrapper.m_UI_OpenEmotes;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1002,6 +1048,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @TrackedDeviceOrientation.started += instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.performed += instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.canceled += instance.OnTrackedDeviceOrientation;
+            @OpenStats.started += instance.OnOpenStats;
+            @OpenStats.performed += instance.OnOpenStats;
+            @OpenStats.canceled += instance.OnOpenStats;
+            @OpenEmotes.started += instance.OnOpenEmotes;
+            @OpenEmotes.performed += instance.OnOpenEmotes;
+            @OpenEmotes.canceled += instance.OnOpenEmotes;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -1036,6 +1088,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @TrackedDeviceOrientation.started -= instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.performed -= instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.canceled -= instance.OnTrackedDeviceOrientation;
+            @OpenStats.started -= instance.OnOpenStats;
+            @OpenStats.performed -= instance.OnOpenStats;
+            @OpenStats.canceled -= instance.OnOpenStats;
+            @OpenEmotes.started -= instance.OnOpenEmotes;
+            @OpenEmotes.performed -= instance.OnOpenEmotes;
+            @OpenEmotes.canceled -= instance.OnOpenEmotes;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1076,5 +1134,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+        void OnOpenStats(InputAction.CallbackContext context);
+        void OnOpenEmotes(InputAction.CallbackContext context);
     }
 }

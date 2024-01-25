@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,6 +19,7 @@ namespace Enemy {
         [SerializeField] private EnemyManager _enemyManager;
         [SerializeField] private SFXEmitter _emitter;
         [SerializeField] private Animator _animator;
+        [SerializeField] private EntityDamager _entityDamager;
 
         [Header("Enemy Parameters")]
         [SerializeField] private float _maxSpeed = 200f;
@@ -43,6 +45,7 @@ namespace Enemy {
         public bool InAttackRange => HasTarget && Vector3.Distance(_enemyManager.Target.OrNull()?.position ?? new Vector3(Mathf.Infinity, Mathf.Infinity), transform.position) <= _attackRange;
         public bool HasTarget => _enemyManager.Target != null;
         public float AttackRange => _attackRange;
+        public EntityDamager EntityDamager => _entityDamager;
         public readonly int AttackHash = Animator.StringToHash("Attack");
         public readonly int SpeedHash = Animator.StringToHash("Speed");
 
@@ -57,6 +60,13 @@ namespace Enemy {
             _enemyManager = transform.parent.GetComponent<EnemyManager>();
             _emitter = GetComponent<SFXEmitter>();
             _attackTimer = new CountDownTimer(_attackDuration);
+            _entityDamager = GetComponentInChildren<EntityDamager>();
+            _attackTimer.OnTimerStop += _entityDamager.EndAttack;
+            _entityDamager.OnHit += Attack;
+        }
+
+        private void Attack(Health health, Vector3 vector) {
+            health.Damage(_damage);
         }
 
         public void Start() {

@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private SFXEmitter _emitter;
     [SerializeField] private Stats _stats;
     [SerializeField] private Animator _animator;
+    [SerializeField] private EntityDamager _entityDamager;
 
     [Header("Player Variables")]
     [SerializeField] private float _maxSpeed = 5f;
@@ -40,8 +41,10 @@ public class PlayerController : MonoBehaviour {
 
     [Header("Gameplay Variables")]
     [SerializeField] private float _speed;
+    [SerializeField] private Vector3 _lookDiff;
 
     [Header("UI")]
+    public bool AllowInput;
 
     [Header("Movement Abilities")]
     [SerializeField] private float _dashCooldown = 2f;
@@ -52,6 +55,7 @@ public class PlayerController : MonoBehaviour {
     private readonly int SpeedHash = Animator.StringToHash("Speed");
     private readonly int LightHash = Animator.StringToHash("Light");
     private readonly int HeavyHash = Animator.StringToHash("Heavy");
+    [SerializeField] private float[] _animationTimes = new float[2];
 
     public float SpeedPercent => Mathf.Clamp01(_speed / _maxSpeed);
     private bool IsIdle => !_lightAttack.IsRunning && !_heavyAttack.IsRunning;
@@ -59,23 +63,27 @@ public class PlayerController : MonoBehaviour {
     private void Awake() {
         _controller = GetComponent<CharacterController>();
         _inputHandler = GetComponent<InputHandler>();
+        _entityDamager = GetComponentInChildren<EntityDamager>();
         _emitter = GetComponent<SFXEmitter>();
         _stats = GetComponent<Stats>();
         _lightAttack = new CountDownTimer(1f / _stats.GetStat(StatType.ATTACK_SPEED));
+        _lightAttack.OnTimerStop += _entityDamager.EndAttack;
         _heavyAttack = new CountDownTimer(1.5f / _stats.GetStat(StatType.ATTACK_SPEED));
+        _heavyAttack.OnTimerStop += _entityDamager.EndAttack;
         _animator = GetComponent<Animator>();
         _health = GetComponent<Health>();
         _health.Init(_stats.GetStat(StatType.MAX_HEALTH), _stats.GetStat(StatType.DEFENCE));
         _stats.OnStatChange += _health.UpdateHealthAndDefence;
         _dashTimer = new CountDownTimer(_dashCooldown);
         _dashTimer.Start();
+        _entityDamager.OnHit += Attack;
     }
 
     private void Start() {
         //_health.OnDamage += (float amount) => _emitter.Play(SoundEffectType.HIT, amount);
         //_health.OnDeath += () => { _emitter.Play(SoundEffectType.DESTROY); GameManager.Instance.PlayerAlive = false; };
         //_health.OnDamage += (float amount) => GameManager.Instance.ResetCombatTimer();
-        //_health.OnDamage += (float amount) => GameManager.Instance.CameraShake(intensity: amount);
+        _health.OnDamage += (float amount) => GameManager.Instance.CameraShake(intensity: amount);
     }
 
     private void Update() {
@@ -83,7 +91,7 @@ public class PlayerController : MonoBehaviour {
             return;
         }
 
-        if (IsIdle) {
+        if (IsIdle && AllowInput) {
             if (_inputHandler.HeavyFireInput) {
                 _heavyAttack.Start();
                 HeavyAttack();
@@ -100,24 +108,53 @@ public class PlayerController : MonoBehaviour {
 
     private void LightAttack() {
         _animator.SetTrigger(LightHash);
-        foreach (Collider collider in Physics.OverlapSphere(transform.position, _attackRadius, Globals.Instance.EnemyLayer)) {
-            if (collider.TryGetComponent(out Health enemyHealth)) {
-                Debug.Log($"Light attack on enemy {enemyHealth.name}");
-                enemyHealth.Damage(_stats.GetStat(StatType.ATTACK_DAMAGE));
-            } else {
-                Debug.Log($"{collider.name} was not an enemy");
-            }
-        }
+        _entityDamager.StartAttack();
+        _lightAttack.Reset();
+        _lightAttack.Start();
+        _animator.speed = _animationTimes[0] * _stats.GetStat(StatType.ATTACK_SPEED);
     }
 
     private void HeavyAttack() {
         _animator.SetTrigger(HeavyHash);
-        foreach (Collider collider in Physics.OverlapSphere(transform.position, _attackRadius, Globals.Instance.EnemyLayer)) {
-            if (collider.TryGetComponent(out Health enemyHealth)) {
-                Debug.Log($"Heavy attack on enemy {enemyHealth.name}");
-                enemyHealth.Damage(_stats.GetStat(StatType.ATTACK_DAMAGE) * 1.5f);
-            }
+        _entityDamager.StartAttack();
+        _heavyAttack.Reset();
+        _heavyAttack.Start();
+        _animator.speed = _animationTimes[1] * _stats.GetStat(StatType.ATTACK_SPEED) / 1.5f;
+    }
+
+    public string GetStatus() {
+        return 
+            $"Health: {_health.CurrentHealth} / {_health.MaxHealth} ({_health.PercentHealth:0%})\n" +
+            $"Defence: {_stats.GetStat(StatType.DEFENCE)}\n" +
+            $"Speed: {_stats.GetStat(StatType.MOVE_SPEED)}\n" +
+            $"Attack Damage: {_stats.GetStat(StatType.ATTACK_DAMAGE)}\n" +
+            $"Attack Speed: {_stats.GetStat(StatType.ATTACK_SPEED)}\n"
+        ;
+    }
+
+    private void EndAttack() {
+        _entityDamager.EndAttack();
+        _animator.speed = 1f;
+    }
+
+    private void Attack(Health health, Vector3 position) {
+        if (_lightAttack.IsRunning) {
+            LightAttackHit(health, position);
+        } else if (_heavyAttack.IsRunning) {
+            HeavyAttackHit(health, position);
         }
+    }
+
+    private void LightAttackHit(Health enemyHealth, Vector3 position) {
+        Debug.Log($"Light attack on enemy {enemyHealth.name}");
+        enemyHealth.Damage(_stats.GetStat(StatType.ATTACK_DAMAGE));
+        Instantiate(Assets.Instance.HitParticles, position, enemyHealth.transform.rotation);
+    }
+
+    private void HeavyAttackHit(Health enemyHealth, Vector3 position) {
+        Debug.Log($"Light attack on enemy {enemyHealth.name}");
+        enemyHealth.Damage(_stats.GetStat(StatType.ATTACK_DAMAGE));
+        Instantiate(Assets.Instance.HitParticles, position, enemyHealth.transform.rotation);
     }
 
     private void FixedUpdate() {
@@ -130,9 +167,9 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void RotateToMouse() {
-        Vector3 diff = (_inputHandler.WorldMousePosition - transform.position).normalized;
-        diff.y = 0f;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(diff), Time.fixedDeltaTime * _rotationSpeed);
+        _lookDiff = (_inputHandler.WorldMousePosition - transform.position).normalized;
+        _lookDiff.y = 0f;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_lookDiff), Time.fixedDeltaTime * _rotationSpeed);
     }
 
     private void Move() {

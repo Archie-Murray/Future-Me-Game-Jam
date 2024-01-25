@@ -18,6 +18,16 @@
             }
           },
           {
+            "id": "964e640d38582f75",
+            "type": "leaf",
+            "state": {
+              "type": "excalidraw",
+              "state": {
+                "file": "Excalidraw/Ideas.md"
+              }
+            }
+          },
+          {
             "id": "757584fc42fcf225",
             "type": "leaf",
             "state": {
@@ -27,7 +37,8 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -155,7 +166,7 @@
       "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
-  "active": "5dbf9af42800f5d0",
+  "active": "964e640d38582f75",
   "lastOpenFiles": [
     "Export.md",
     "Excalidraw/Ideas.md",

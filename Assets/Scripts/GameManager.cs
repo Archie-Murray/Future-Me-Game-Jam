@@ -103,7 +103,7 @@ public class GameManager : Singleton<GameManager> {
             Debug.LogError("Perlin Noise Not initialised");
             yield break;
         }
-        _cameraNoise.m_AmplitudeGain = intensity;
+        _cameraNoise.m_AmplitudeGain = intensity / 10f;
         yield return Yielders.WaitForSeconds(time);
         _cameraNoise.m_AmplitudeGain = 0f;
         yield return Yielders.WaitForEndOfFrame;

@@ -8,6 +8,7 @@ public class Globals : Singleton<Globals> {
     public LayerMask PlayerLayer;
     public LayerMask EnemyLayer;
     public SoundManager SoundManager;
+    public Controls Controls;
     [SerializeField] private SoundEffect[] _effects;
     [SerializeField] private AudioMixer _audioMixer;
     [SerializeField] private AudioMixerGroup _sfx, _bgm;
@@ -17,5 +18,7 @@ public class Globals : Singleton<Globals> {
         PlayerLayer = 1 << LayerMask.NameToLayer("Player");
         EnemyLayer = 1 << LayerMask.NameToLayer("Enemy");
         MainCamera = Camera.main;
+        Controls = new Controls();
+        Controls.Enable();
     }
 }
