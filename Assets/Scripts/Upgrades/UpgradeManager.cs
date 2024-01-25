@@ -33,6 +33,7 @@ namespace Upgrades {
             }
         }
 
+        // Want to call this when the player gets enough xp to level up
         public void ShowUpgrades() {
             _uiCanvas.FadeCanvas(0.25f, false, this);
             foreach (UpgradeUI upgradeUI in _upgradeSlots) {
@@ -40,7 +41,7 @@ namespace Upgrades {
             }
         }
 
-        public void HideUpgrades() {
+        private void HideUpgrades() {
             _uiCanvas.FadeCanvas(0.25f, true, this);
             foreach (UpgradeUI upgradeUI in _upgradeSlots) {
                 upgradeUI.UnsetUpgrade();
@@ -65,12 +66,17 @@ namespace Upgrades {
             public void SetUpgrade(Upgrade upgrade) {
                 UpgradeImage.sprite = upgrade.Icon;
                 UpgradeButton.onClick.RemoveAllListeners();
-                UpgradeButton.onClick.AddListener(() => upgrade.ApplyUpgrade(UpgradeManager._playerStats));
+                UpgradeButton.onClick.AddListener(() => ApplyUpgrade(upgrade));
             }
 
             public void UnsetUpgrade() {
                 UpgradeImage.sprite = UpgradeManager._defaultIcon;
                 UpgradeButton.onClick.RemoveAllListeners();
+            }
+
+            private void ApplyUpgrade(Upgrade upgrade) {
+                upgrade.ApplyUpgrade(UpgradeManager._playerStats);
+                UpgradeManager.HideUpgrades();
             }
         }
     }
