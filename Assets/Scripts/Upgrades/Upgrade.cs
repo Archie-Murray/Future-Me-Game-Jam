@@ -1,6 +1,7 @@
 using UnityEngine;
 
 namespace Upgrades {
+    [CreateAssetMenu(menuName = "Upgrade")]
     public class Upgrade : ScriptableObject {
         public Sprite Icon;
         public StatType Type;
