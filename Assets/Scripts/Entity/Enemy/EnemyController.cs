@@ -76,8 +76,10 @@ namespace Enemy {
                 Debug.LogError("State was not initialised!");
             }
             _state?.Start();
+            Level level = FindFirstObjectByType<Level>();
             Health health = GetComponent<Health>();
             health.Init(100f, 10f);
+            health.OnDeath += () => level.AddXP(100);
             _attackTimer.Start();
             // health.OnDamage += (float amount) => GameManager.Instance.ResetCombatTimer();
             // health.OnDamage += (float damage) => GameManager.Instance.CameraShake(intensity: damage);

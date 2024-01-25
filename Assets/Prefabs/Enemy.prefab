@@ -190,7 +190,7 @@ MonoBehaviour:
   _chaseRange: 10
   _attackRange: 2
   _attackDuration: 3.7
-  _damage: 11
+  _damage: 5
   _attackTimer:
     _initialTime: 0
     _time: 0
@@ -241,8 +241,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee62d3dbae0f907b289a476f1e0ea48b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 100
-  _currentHealth: 0
+  _maxHealth: 20
+  _currentHealth: 20
   _defence: 0
   _deathTimer: 0.25
   _isInvulnerable: 0

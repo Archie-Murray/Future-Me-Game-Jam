@@ -159,9 +159,11 @@ public static class Extensions {
         }
         if (fadeToTransparent) {
             canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
             canvasGroup.alpha = 0f;
         } else {
             canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
             canvasGroup.alpha = 1f;
         }
     }

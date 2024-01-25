@@ -16,6 +16,7 @@ namespace Upgrades {
         [SerializeField] private Stats _playerStats;
         [SerializeField] private CanvasGroup _uiCanvas;
         [SerializeField] private UpgradeUI[] _upgradeSlots;
+        [SerializeField] private int _unappliedUpgrades = 0;
 
         [Header("Must be set in editor")]
         [SerializeField] private Upgrade[] _upgrades;
@@ -25,6 +26,7 @@ namespace Upgrades {
         private void Awake() {
             _playerStats = FindFirstObjectByType<PlayerController>().GetComponent<Stats>();
             _uiCanvas = FindFirstObjectByType<UIUpgrade>().GetComponent<CanvasGroup>();
+            _uiCanvas.blocksRaycasts = false;
             _upgradeSlots = new UpgradeUI[UPGRADE_SLOTS];
             for (int i = 0; i < UPGRADE_SLOTS; i++) {
                 GameObject slot = Instantiate(_upgradePrefab, _uiCanvas.transform);
@@ -42,10 +44,17 @@ namespace Upgrades {
             if (Input.GetKeyDown(KeyCode.U)) {
                 ShowUpgrades();
             }
+            if (_unappliedUpgrades > 0 && _uiCanvas.alpha == 0f) {
+                ShowUpgrades();
+            }
+        }
+
+        public void AllowUpgrade() {
+            _unappliedUpgrades++;
         }
 
         // Want to call this when the player gets enough xp to level up
-        public void ShowUpgrades() {
+        private void ShowUpgrades() {
             _uiCanvas.FadeCanvas(0.25f, false, this);
             foreach (UpgradeUI upgradeUI in _upgradeSlots) {
                 upgradeUI.SetUpgrade(GetRandomUpgrade());
@@ -93,6 +102,7 @@ namespace Upgrades {
             private void ApplyUpgrade(Upgrade upgrade) {
                 upgrade.ApplyUpgrade(UpgradeManager._playerStats);
                 UpgradeManager.HideUpgrades();
+                UpgradeManager._unappliedUpgrades--;
             }
         }
     }

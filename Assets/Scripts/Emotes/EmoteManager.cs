@@ -21,6 +21,7 @@ public class EmoteManager : MonoBehaviour {
         _animator = _playerController.GetComponent<Animator>();
         _animGUI = GetComponent<CanvasGroup>();
         _enabledGUI = _animGUI.alpha == 1f;
+        _animGUI.blocksRaycasts = _enabledGUI;
     }
 
     // Update is called once per frame
