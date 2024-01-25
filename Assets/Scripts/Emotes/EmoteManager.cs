@@ -10,7 +10,7 @@ public class EmoteManager : MonoBehaviour {
     private readonly int _emoteHash = Animator.StringToHash("Emote");
     private readonly int _emoteEnabledHash = Animator.StringToHash("Emote Enabled");
     private readonly int _emoteDisabledHash = Animator.StringToHash("Emote Disabled");
-    [SerializeField] private int _emoteID = 0;
+    [SerializeField, Range(0, 4)] private int _emoteID = 0;
     private Animator _animator;
     private bool _enabledGUI = false;
     private CanvasGroup _animGUI;
