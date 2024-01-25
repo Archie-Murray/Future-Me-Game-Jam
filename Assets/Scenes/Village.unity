@@ -3286,6 +3286,11 @@ PrefabInstance:
       propertyPath: _inputHandler
       value: 
       objectReference: {fileID: 570274765}
+    - target: {fileID: 7144341312476955271, guid: 598b7f8db2262096a855cbdacf768ae1,
+        type: 3}
+      propertyPath: _animationTimes.Array.data[0]
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8404975032330307623, guid: 598b7f8db2262096a855cbdacf768ae1,
         type: 3}
       propertyPath: m_Name

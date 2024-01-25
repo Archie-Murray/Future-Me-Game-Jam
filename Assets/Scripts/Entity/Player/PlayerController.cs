@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour {
         //_health.OnDamage += (float amount) => _emitter.Play(SoundEffectType.HIT, amount);
         //_health.OnDeath += () => { _emitter.Play(SoundEffectType.DESTROY); GameManager.Instance.PlayerAlive = false; };
         //_health.OnDamage += (float amount) => GameManager.Instance.ResetCombatTimer();
-        //_health.OnDamage += (float amount) => GameManager.Instance.CameraShake(intensity: amount);
+        _health.OnDamage += (float amount) => GameManager.Instance.CameraShake(intensity: amount);
     }
 
     private void Update() {
