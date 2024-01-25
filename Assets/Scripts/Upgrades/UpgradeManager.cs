@@ -38,6 +38,12 @@ namespace Upgrades {
             }
         }
 
+        private void Update() {
+            if (Input.GetKeyDown(KeyCode.U)) {
+                ShowUpgrades();
+            }
+        }
+
         // Want to call this when the player gets enough xp to level up
         public void ShowUpgrades() {
             _uiCanvas.FadeCanvas(0.25f, false, this);

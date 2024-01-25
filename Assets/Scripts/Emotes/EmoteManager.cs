@@ -25,7 +25,6 @@ public class EmoteManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        _animator.SetFloat(_emoteHash, _emoteID);
         if (Input.GetKeyDown(KeyCode.E)) {
             _enabledGUI = !_enabledGUI;
             _animGUI.FadeCanvas(0.15f, !_enabledGUI, this);
@@ -49,5 +48,6 @@ public class EmoteManager : MonoBehaviour {
         }
         Debug.Log(value);
         _animator.SetTrigger(_emoteEnabledHash);
+        _animator.SetFloat(_emoteHash, _emoteID);
     }
 }
