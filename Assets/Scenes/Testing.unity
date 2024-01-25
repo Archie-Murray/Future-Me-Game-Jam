@@ -252,7 +252,7 @@ MonoBehaviour:
   m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
-  m_StopNaN: 0
+  m_StopNaN: 1
   m_Dithering: 0
   m_ClearDepth: 1
   m_AllowXRRendering: 1
@@ -862,7 +862,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: a6560a915ef98420e9faacc1c7438823, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 198f2e6045e19a2eaa3dc30257fea51b, type: 2}
 --- !u!4 &832575519
 Transform:
   m_ObjectHideFlags: 0
@@ -1577,7 +1577,7 @@ GameObject:
   - component: {fileID: 204462805057983267}
   - component: {fileID: 2516820683133346692}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1858,7 +1858,7 @@ PrefabInstance:
     - target: {fileID: 7577417381188745812, guid: c56c784b323e56859b821b5ac06c1d94,
         type: 3}
       propertyPath: m_Alpha
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7577417381188745812, guid: c56c784b323e56859b821b5ac06c1d94,
         type: 3}
@@ -1883,6 +1883,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Health Bar
       objectReference: {fileID: 0}
+    - target: {fileID: 2330306082061302554, guid: c6aff96d34211db47b261de44842cbe8,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fed7228d55b5b7931884cc61c2bd2102,
+        type: 3}
     - target: {fileID: 3581719463547661160, guid: c6aff96d34211db47b261de44842cbe8,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -2017,6 +2023,27 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8046871504046499722, guid: c6aff96d34211db47b261de44842cbe8,
+        type: 3}
+      propertyPath: m_Type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8046871504046499722, guid: c6aff96d34211db47b261de44842cbe8,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fed7228d55b5b7931884cc61c2bd2102,
+        type: 3}
+    - target: {fileID: 8046871504046499722, guid: c6aff96d34211db47b261de44842cbe8,
+        type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 0.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 8638233329674477468, guid: c6aff96d34211db47b261de44842cbe8,
+        type: 3}
+      propertyPath: m_Value
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
