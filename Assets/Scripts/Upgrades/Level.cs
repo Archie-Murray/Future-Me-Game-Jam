@@ -54,13 +54,13 @@ public class Level : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        //UpdateXPBar();
+        UpdateXPBar();
     }
 
     private void UpdateXPBar() {
         _currentValue = Mathf.MoveTowards(_currentValue, LevelProgress, _animationSpeed * Time.fixedDeltaTime);
         _xpBar.value = _currentValue;
-        _xpReadout.text = $"{_xp} / {NextLevelXP} ({LevelProgress:0%})";
+        _xpReadout.text = _level == MAX_LEVEL ? "MAX LEVEL" : $"{_xp} / {NextLevelXP} ({LevelProgress:0%})";
     }
 
     public void AddXP(int amount) {

@@ -70,7 +70,7 @@ public static class Extensions {
     ///<param name="y">New y value if specified</param>
     ///<param name="z">New z value if specified</param>
     ///<returns>Modified vector</returns>
-    public static Vector3 With(this Vector3 vector, float? x, float? y, float? z) {
+    public static Vector3 With(this Vector3 vector, float? x = 0f, float? y = 0f, float? z = 0f) {
         return new Vector3(x ?? vector.x, y ?? vector.y, z ?? vector.z);
         
     }

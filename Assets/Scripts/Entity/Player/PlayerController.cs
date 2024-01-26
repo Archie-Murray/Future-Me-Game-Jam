@@ -41,7 +41,10 @@ public class PlayerController : MonoBehaviour {
 
     [Header("Gameplay Variables")]
     [SerializeField] private float _speed;
+    [SerializeField] private float _eulerY;
+    [SerializeField] private Vector3 _targetDirection;
     [SerializeField] private Vector3 _lookDiff;
+    [SerializeField] private Quaternion _camRotation;
 
     [Header("UI")]
     public bool AllowInput;
@@ -84,6 +87,8 @@ public class PlayerController : MonoBehaviour {
         //_health.OnDeath += () => { _emitter.Play(SoundEffectType.DESTROY); GameManager.Instance.PlayerAlive = false; };
         //_health.OnDamage += (float amount) => GameManager.Instance.ResetCombatTimer();
         _health.OnDamage += (float amount) => GameManager.Instance.CameraShake(intensity: amount);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void Update() {
@@ -158,7 +163,12 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        RotateToMouse();
+        _speed = Mathf.MoveTowards(_speed, GetTargetSpeed(), Time.fixedDeltaTime * _acceleration);
+        _input.x = _inputHandler.MoveInput.x;
+        _input.z = _inputHandler.MoveInput.y;
+        _input.y = 0f;
+        _input.Normalize();
+        UpdateTargetDirection();
         Move();
         _animator.SetFloat(SpeedHash, Mathf.Clamp01(_speed / GetMaxSpeed()));
         _dashTimer.Update(Time.fixedDeltaTime);
@@ -166,17 +176,15 @@ public class PlayerController : MonoBehaviour {
         _heavyAttack.Update(Time.fixedDeltaTime);
     }
 
-    private void RotateToMouse() {
-        _lookDiff = (_inputHandler.WorldMousePosition - transform.position).normalized;
-        _lookDiff.y = 0f;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_lookDiff), Time.fixedDeltaTime * _rotationSpeed);
+    private void UpdateTargetDirection() {
+        _targetDirection = Quaternion.AngleAxis(Globals.Instance.MainCamera.transform.eulerAngles.y, Vector3.up) * _input;
+        if (_inputHandler.IsMovePressed) {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_targetDirection, transform.up), _rotationSpeed * Time.fixedDeltaTime);
+        }   
     }
 
     private void Move() {
-        _speed = Mathf.MoveTowards(_speed, GetTargetSpeed(), Time.fixedDeltaTime * _acceleration);
-        _input.x = _inputHandler.MoveInput.x;
-        _input.z = _inputHandler.MoveInput.y;
-        _velocity = _input;
+        _velocity = _targetDirection;
         _velocity.y = -0.1f;
         _velocity = Vector3.ClampMagnitude(_velocity * _speed, GetMaxSpeed());
         _controller.SimpleMove(_velocity);
