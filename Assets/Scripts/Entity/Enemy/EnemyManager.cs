@@ -15,6 +15,8 @@ namespace Enemy {
         [SerializeField] private EnemySpawner _enemySpawner;
         [SerializeField] private CountDownTimer _spawnTimer = new CountDownTimer(5f);
         [SerializeField] private GameObject _enemyPrefab;
+        [SerializeField] private AudioSource _deathsound;
+        [SerializeField] private GameObject _healthPickup;
 
         public Transform Target { get { return _target; } }
         public bool FinishedSpawning => _spawnCount == _maxSpawnCount;
@@ -24,6 +26,7 @@ namespace Enemy {
             _target = FindFirstObjectByType<PlayerController>().transform;
             _spawnPoints = Array.ConvertAll(GetComponentsInChildren<EnemySpawnPoint>(), (EnemySpawnPoint point) => point.transform);
             _enemySpawner = new EnemySpawner(new RandomSpawnStrategy(_spawnPoints), _enemyPrefab);
+            _deathsound = GetComponent<AudioSource>();
         }
 
         private void FixedUpdate() {
@@ -44,6 +47,8 @@ namespace Enemy {
         }
 
         private void EnemyKillReward() {
+            _deathsound.Play();
+            Instantiate(_healthPickup, transform);
         }
     }
 }

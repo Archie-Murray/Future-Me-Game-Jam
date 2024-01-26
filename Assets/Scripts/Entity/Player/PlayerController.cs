@@ -57,6 +57,10 @@ public class PlayerController : MonoBehaviour {
     private readonly int HeavyHash = Animator.StringToHash("Heavy");
     [SerializeField] private float[] _animationTimes = new float[2];
 
+    [Header("Healing")]
+    [SerializeField] private float CurrentHealth;
+    [SerializeField] private float _healAmount = 10f;
+
     public float SpeedPercent => Mathf.Clamp01(_speed / _maxSpeed);
     private bool IsIdle => !_lightAttack.IsRunning && !_heavyAttack.IsRunning;
 
@@ -84,6 +88,7 @@ public class PlayerController : MonoBehaviour {
         //_health.OnDeath += () => { _emitter.Play(SoundEffectType.DESTROY); GameManager.Instance.PlayerAlive = false; };
         //_health.OnDamage += (float amount) => GameManager.Instance.ResetCombatTimer();
         _health.OnDamage += (float amount) => GameManager.Instance.CameraShake(intensity: amount);
+        CurrentHealth = _health.CurrentHealth;
     }
 
     private void Update() {
@@ -203,6 +208,12 @@ public class PlayerController : MonoBehaviour {
             return _dashForce;
         } else {
             return _inputHandler.IsSprintPressed ? _sprintSpeed : _maxSpeed;
+        }
+    }
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.layer == 10) {
+
+            CurrentHealth = CurrentHealth + _healAmount;
         }
     }
 }
