@@ -66,10 +66,10 @@ public class PlayerController : MonoBehaviour {
         _entityDamager = GetComponentInChildren<EntityDamager>();
         _emitter = GetComponent<SFXEmitter>();
         _stats = GetComponent<Stats>();
-        _lightAttack = new CountDownTimer(1f / _stats.GetStat(StatType.ATTACK_SPEED));
-        _lightAttack.OnTimerStop += _entityDamager.EndAttack;
-        _heavyAttack = new CountDownTimer(1.5f / _stats.GetStat(StatType.ATTACK_SPEED));
-        _heavyAttack.OnTimerStop += _entityDamager.EndAttack;
+        _lightAttack = new CountDownTimer(_animationTimes[0] / _stats.GetStat(StatType.ATTACK_SPEED));
+        _lightAttack.OnTimerStop += EndAttack;
+        _heavyAttack = new CountDownTimer(_animationTimes[1] / _stats.GetStat(StatType.ATTACK_SPEED));
+        _heavyAttack.OnTimerStop += EndAttack;
         _animator = GetComponent<Animator>();
         _health = GetComponent<Health>();
         _health.Init(_stats.GetStat(StatType.MAX_HEALTH), _stats.GetStat(StatType.DEFENCE));
@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour {
     private void LightAttack() {
         _animator.SetTrigger(LightHash);
         _entityDamager.StartAttack();
-        _lightAttack.Reset();
+        _lightAttack.Reset(_animationTimes[0] / _stats.GetStat(StatType.ATTACK_SPEED));
         _lightAttack.Start();
         _animator.speed = _animationTimes[0] * _stats.GetStat(StatType.ATTACK_SPEED);
     }
@@ -117,9 +117,9 @@ public class PlayerController : MonoBehaviour {
     private void HeavyAttack() {
         _animator.SetTrigger(HeavyHash);
         _entityDamager.StartAttack();
-        _heavyAttack.Reset();
+        _heavyAttack.Reset(_animationTimes[1] / _stats.GetStat(StatType.ATTACK_SPEED));
         _heavyAttack.Start();
-        _animator.speed = _animationTimes[1] * _stats.GetStat(StatType.ATTACK_SPEED) / 1.5f;
+        _animator.speed = _animationTimes[1] * _stats.GetStat(StatType.ATTACK_SPEED);
     }
 
     public string GetStatus() {

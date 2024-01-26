@@ -36,6 +36,7 @@ public class EmoteManager : MonoBehaviour {
             } else {
                 _playerController.AllowInput = true;
                 _animator.SetTrigger(_emoteDisabledHash);
+                _animator.SetFloat(_emoteHash, 0f);
             }
         }
     }
@@ -48,7 +49,6 @@ public class EmoteManager : MonoBehaviour {
             _emoteID = value;
         }
         Debug.Log(value);
-        _animator.SetTrigger(_emoteEnabledHash);
         _animator.SetFloat(_emoteHash, _emoteID);
     }
 }

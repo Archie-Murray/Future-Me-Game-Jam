@@ -21,7 +21,6 @@ public class Health : MonoBehaviour {
         _maxHealth = maxHealth;
         _currentHealth = maxHealth;
         _defence = defence;
-
     }
 
     public string GetHealthText() {
@@ -34,11 +33,11 @@ public class Health : MonoBehaviour {
 
     public void UpdateHealthAndDefence(StatType type, float amount) {
         if (type == StatType.MAX_HEALTH) {
-            float diff = amount - _maxHealth;
-            _maxHealth = amount;
+            float diff = _maxHealth - amount;
+            _maxHealth += amount;
             Heal(diff);
         } else if (type == StatType.DEFENCE) {
-            _defence = amount;
+            _defence += amount;
         }
     }
 
