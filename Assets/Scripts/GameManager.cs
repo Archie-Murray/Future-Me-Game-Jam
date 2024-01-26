@@ -36,9 +36,9 @@ public class GameManager : Singleton<GameManager> {
         _tickSystem = gameObject.GetOrAddComponent<TickSystem>();
         // _tickSystem.TickLoop += HandleEndGame;
         _tickSystem.TickLoop += (float deltaTime) => _combatTimer.Update(deltaTime);
-        // _bgmEmitter = GetComponent<BGMEmitter>();
-        // _combatTimer.OnTimerStart += () => _bgmEmitter.PlayBGM(BGMType.COMBAT);
-        // _combatTimer.OnTimerStop += () => _bgmEmitter.PlayBGM(BGMType.PASSIVE);
+         _bgmEmitter = GetComponent<BGMEmitter>();
+         _combatTimer.OnTimerStart += () => _bgmEmitter.PlayBGM(BGMType.COMBAT);
+         _combatTimer.OnTimerStop += () => _bgmEmitter.PlayBGM(BGMType.PASSIVE);
         _virtualCamera = FindFirstObjectByType<CinemachineVirtualCamera>();
         _initialCameraSize = _virtualCamera.m_Lens.OrthographicSize;
         _cameraNoise = _virtualCamera.OrNull()?.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>() ?? null;
@@ -157,10 +157,10 @@ public class GameManager : Singleton<GameManager> {
     //    SceneManager.LoadScene(0);
     //}
 
-    //public void ResetCombatTimer() {
-    //    _combatTimer.Reset(5f);
-    //    _combatTimer.Start();
-    //}
+    public void ResetCombatTimer() {
+        _combatTimer.Reset(5f);
+        _combatTimer.Start();
+    }
 
     //public void StartTutorial() {
     //    Instantiate(_tutorialManager, Vector3.zero, Quaternion.identity);

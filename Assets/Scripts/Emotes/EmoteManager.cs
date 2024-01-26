@@ -43,11 +43,7 @@ public class EmoteManager : MonoBehaviour {
 
 
     public void SetEmote(int value) {
-        if (_emoteID == value) {
-            _emoteID = 0;
-        } else {
-            _emoteID = value;
-        }
+        _emoteID = _emoteID == value ? 0 : value;
         Debug.Log(value);
         _animator.SetFloat(_emoteHash, _emoteID);
     }
