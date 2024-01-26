@@ -161,6 +161,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: -4489882178130048047}
   m_SourcePrefab: {fileID: 100100000, guid: 1fb1fec07e334be0cb2a5eb1a32b5067, type: 3}
+--- !u!95 &1242307200657493615 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 1fb1fec07e334be0cb2a5eb1a32b5067,
+    type: 3}
+  m_PrefabInstance: {fileID: 4636203447838389246}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5518725564062764719 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1fb1fec07e334be0cb2a5eb1a32b5067,
@@ -179,10 +185,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ca8c15a68c848cb893c9536c7f11757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _agent: {fileID: 0}
+  _agent: {fileID: 7195853124486957145}
   _enemyManager: {fileID: 0}
-  _emitter: {fileID: 0}
-  _animator: {fileID: 0}
+  _emitter: {fileID: 223143348551059896}
+  _animator: {fileID: 1242307200657493615}
   _entityDamager: {fileID: 0}
   _maxSpeed: 5
   _maxAcceleration: 20
@@ -194,6 +200,7 @@ MonoBehaviour:
   _attackTimer:
     _initialTime: 0
     _time: 0
+  XPGain: 2
 --- !u!195 &7195853124486957145
 NavMeshAgent:
   m_ObjectHideFlags: 0

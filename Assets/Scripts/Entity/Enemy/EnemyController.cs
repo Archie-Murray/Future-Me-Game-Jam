@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.XPath;
 
 using UnityEngine;
 using UnityEngine.AI;
@@ -34,6 +35,9 @@ namespace Enemy {
         [SerializeField] private CountDownTimer _attackTimer;
         private EnemyState _state;
         private EnemyState.EnemyStateFactory _stateFactory;
+
+        [Header("XP")]
+        [SerializeField] private int XPGain = 10;
 
         public EnemyState State { get { return _state; } set { _state = value; } }
         public NavMeshAgent Agent { get { return _agent; } }
@@ -79,7 +83,7 @@ namespace Enemy {
             Level level = FindFirstObjectByType<Level>();
             Health health = GetComponent<Health>();
             health.Init(100f, 10f);
-            health.OnDeath += () => level.AddXP(100);
+            health.OnDeath += () => level.AddXP(XPGain);
             _attackTimer.Start();
             health.OnDamage += (float amount) => GameManager.Instance.ResetCombatTimer();
             health.OnDamage += (float damage) => GameManager.Instance.CameraShake(intensity: damage);

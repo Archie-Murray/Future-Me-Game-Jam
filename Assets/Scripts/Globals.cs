@@ -10,6 +10,7 @@ public class Globals : Singleton<Globals> {
     public SoundManager SoundManager;
     public Controls Controls;
     public void Start() {
+        Cursor.visible = true;
         SoundManager.Init();
         PlayerLayer = 1 << LayerMask.NameToLayer("Player");
         EnemyLayer = 1 << LayerMask.NameToLayer("Enemy");
