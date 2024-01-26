@@ -653,7 +653,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254787445}
-  m_LocalRotation: {x: 0.20520163, y: 0.054459326, z: -0.011436624, w: 0.9771365}
+  m_LocalRotation: {x: 0.20520163, y: 0.054459296, z: -0.011436617, w: 0.9771365}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1912,7 +1912,7 @@ MonoBehaviour:
     _time: 0
   _enemyPrefab: {fileID: 5518725564062764719, guid: ea71de653919e093db998826375a120c,
     type: 3}
-  _healthPickup: {fileID: 7324924227562834018, guid: 9a396dbbfee3a0444bc95330203f8af1,
+  _healthPickup: {fileID: 2018677267121407446, guid: 573cb52a34b59c942b50562a69e5ea35,
     type: 3}
 --- !u!1 &1337816263
 GameObject:

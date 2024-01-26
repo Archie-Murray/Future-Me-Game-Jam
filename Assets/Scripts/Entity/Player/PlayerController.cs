@@ -87,11 +87,8 @@ public class PlayerController : MonoBehaviour {
         _health.OnDeath += () => { _emitter.Play(SoundEffectType.PLAYER_DEATH); GameManager.Instance.PlayerAlive = false; };
         _health.OnDamage += (float amount) => GameManager.Instance.ResetCombatTimer();
         _health.OnDamage += (float amount) => GameManager.Instance.CameraShake(intensity: amount);
-<<<<<<< HEAD
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-=======
->>>>>>> 408df0a9cb907caa74deefca3fa8d0a749cfd75e
     }
 
     private void Update() {
