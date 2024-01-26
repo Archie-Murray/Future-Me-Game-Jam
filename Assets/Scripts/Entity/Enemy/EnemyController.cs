@@ -81,10 +81,11 @@ namespace Enemy {
             health.Init(100f, 10f);
             health.OnDeath += () => level.AddXP(100);
             _attackTimer.Start();
-            // health.OnDamage += (float amount) => GameManager.Instance.ResetCombatTimer();
-            // health.OnDamage += (float damage) => GameManager.Instance.CameraShake(intensity: damage);
-            // health.OnDamage += (float damage) => _emitter.Play(SoundEffectType.HIT);
-            // health.OnDeath += () => _emitter.Play(SoundEffectType.DESTROY);
+            health.OnDamage += (float amount) => GameManager.Instance.ResetCombatTimer();
+            health.OnDamage += (float damage) => GameManager.Instance.CameraShake(intensity: damage);
+            health.OnDamage += (float damage) => _emitter.Play(SoundEffectType.ENEMY_HIT);
+            health.OnDeath += () => _emitter.Play(SoundEffectType.ENEMY_DEATH);
+            health.OnDeath += () => _enemyManager.SpawnHealthPickup(transform.position);
         }
 
         public void Update() {

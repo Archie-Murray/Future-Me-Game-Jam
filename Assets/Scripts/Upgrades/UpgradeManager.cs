@@ -55,6 +55,9 @@ namespace Upgrades {
 
         // Want to call this when the player gets enough xp to level up
         private void ShowUpgrades() {
+            GameManager.Instance.InMenu = true;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             _uiCanvas.FadeCanvas(0.25f, false, this);
             foreach (UpgradeUI upgradeUI in _upgradeSlots) {
                 upgradeUI.SetUpgrade(GetRandomUpgrade());
@@ -66,6 +69,9 @@ namespace Upgrades {
             foreach (UpgradeUI upgradeUI in _upgradeSlots) {
                 upgradeUI.UnsetUpgrade();
             }
+            GameManager.Instance.InMenu = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
         private Upgrade GetRandomUpgrade() {

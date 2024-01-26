@@ -42,6 +42,7 @@ namespace Enemy {
 
         public void Attack() {
             _controller.Animator.SetTrigger(_controller.AttackHash);
+            _controller.Emitter.Play(SoundEffectType.ENEMY_ATTACK);
             _controller.EntityDamager.StartAttack();
             _controller.AttackTimer.Reset();
             _controller.AttackTimer.Start();

@@ -22,8 +22,8 @@ public class GameManager : Singleton<GameManager> {
     [SerializeField] private TickSystem _tickSystem;
     //[SerializeField] private EnemyManager[] _enemyManagers = null;
     [SerializeField] private CountDownTimer _combatTimer = new CountDownTimer(0f);
-    [SerializeField] private CinemachineBasicMultiChannelPerlin _cameraNoise;
-    [SerializeField] private CinemachineVirtualCamera _virtualCamera;
+    [SerializeField] private CinemachineBasicMultiChannelPerlin[] _cameraNoiseComponents;
+    [SerializeField] private CinemachineFreeLook _virtualCamera;
     [SerializeField] private BGMEmitter _bgmEmitter;
     [SerializeField] private Volume _postProcessVolume;
     [SerializeField] private ChromaticAberration _chromaticAberration;
@@ -39,9 +39,12 @@ public class GameManager : Singleton<GameManager> {
          _bgmEmitter = GetComponent<BGMEmitter>();
          _combatTimer.OnTimerStart += () => _bgmEmitter.PlayBGM(BGMType.COMBAT);
          _combatTimer.OnTimerStop += () => _bgmEmitter.PlayBGM(BGMType.PASSIVE);
-        _virtualCamera = FindFirstObjectByType<CinemachineVirtualCamera>();
+        _virtualCamera = FindFirstObjectByType<CinemachineFreeLook>();
+        _cameraNoiseComponents = new CinemachineBasicMultiChannelPerlin[3];
+        _cameraNoiseComponents[0] = _virtualCamera.GetRig(0).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        _cameraNoiseComponents[1] = _virtualCamera.GetRig(1).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        _cameraNoiseComponents[2] = _virtualCamera.GetRig(2).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         _initialCameraSize = _virtualCamera.m_Lens.OrthographicSize;
-        _cameraNoise = _virtualCamera.OrNull()?.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>() ?? null;
         _postProcessVolume = FindFirstObjectByType<Volume>();
         _postProcessVolume.profile.TryGet(out _chromaticAberration);
         if (!_chromaticAberration) {
@@ -99,13 +102,17 @@ public class GameManager : Singleton<GameManager> {
     }
 
     private IEnumerator ShakeCamera(float intensity, float time) {
-        if (_cameraNoise == null) {
+        if (_cameraNoiseComponents == null) {
             Debug.LogError("Perlin Noise Not initialised");
             yield break;
         }
-        _cameraNoise.m_AmplitudeGain = intensity / 10f;
+        foreach (CinemachineBasicMultiChannelPerlin perlin in _cameraNoiseComponents) {
+            perlin.m_AmplitudeGain = intensity / 10f;
+        }
         yield return Yielders.WaitForSeconds(time);
-        _cameraNoise.m_AmplitudeGain = 0f;
+        foreach (CinemachineBasicMultiChannelPerlin perlin in _cameraNoiseComponents) {
+            perlin.m_AmplitudeGain = 0f;
+        }
         yield return Yielders.WaitForEndOfFrame;
     }
 

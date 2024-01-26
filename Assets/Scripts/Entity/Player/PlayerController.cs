@@ -41,7 +41,10 @@ public class PlayerController : MonoBehaviour {
 
     [Header("Gameplay Variables")]
     [SerializeField] private float _speed;
+    [SerializeField] private float _eulerY;
+    [SerializeField] private Vector3 _targetDirection;
     [SerializeField] private Vector3 _lookDiff;
+    [SerializeField] private Quaternion _camRotation;
 
     [Header("UI")]
     public bool AllowInput;
@@ -52,14 +55,10 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private CountDownTimer _dashTimer;
     [SerializeField] private bool _dashPressed = false; //Need to make sure this is consumed in FixedUpdate
     [SerializeField] private float _brakeForce = 20f;
-    private readonly int SpeedHash = Animator.StringToHash("Speed");
-    private readonly int LightHash = Animator.StringToHash("Light");
-    private readonly int HeavyHash = Animator.StringToHash("Heavy");
+    private readonly int _speedHash = Animator.StringToHash("Speed");
+    private readonly int _lightHash = Animator.StringToHash("Light");
+    private readonly int _heavyHash = Animator.StringToHash("Heavy");
     [SerializeField] private float[] _animationTimes = new float[2];
-
-    [Header("Healing")]
-    [SerializeField] private float CurrentHealth;
-    [SerializeField] private float _healAmount = 10f;
 
     public float SpeedPercent => Mathf.Clamp01(_speed / _maxSpeed);
     private bool IsIdle => !_lightAttack.IsRunning && !_heavyAttack.IsRunning;
@@ -84,11 +83,12 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Start() {
-        //_health.OnDamage += (float amount) => _emitter.Play(SoundEffectType.HIT, amount);
-        //_health.OnDeath += () => { _emitter.Play(SoundEffectType.DESTROY); GameManager.Instance.PlayerAlive = false; };
-        //_health.OnDamage += (float amount) => GameManager.Instance.ResetCombatTimer();
+        _health.OnDamage += (float amount) => _emitter.Play(SoundEffectType.PLAYER_HIT, amount);
+        _health.OnDeath += () => { _emitter.Play(SoundEffectType.PLAYER_DEATH); GameManager.Instance.PlayerAlive = false; };
+        _health.OnDamage += (float amount) => GameManager.Instance.ResetCombatTimer();
         _health.OnDamage += (float amount) => GameManager.Instance.CameraShake(intensity: amount);
-        CurrentHealth = _health.CurrentHealth;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void Update() {
@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour {
             return;
         }
 
-        if (IsIdle && AllowInput) {
+        if (IsIdle && AllowInput && !GameManager.Instance.InMenu) {
             if (_inputHandler.HeavyFireInput) {
                 _heavyAttack.Start();
                 HeavyAttack();
@@ -112,7 +112,8 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void LightAttack() {
-        _animator.SetTrigger(LightHash);
+        _emitter.Play(SoundEffectType.PLAYER_LIGHT);
+        _animator.SetTrigger(_lightHash);
         _entityDamager.StartAttack();
         _lightAttack.Reset(_animationTimes[0] / _stats.GetStat(StatType.ATTACK_SPEED));
         _lightAttack.Start();
@@ -120,7 +121,8 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void HeavyAttack() {
-        _animator.SetTrigger(HeavyHash);
+        _emitter.Play(SoundEffectType.PLAYER_HEAVY);
+        _animator.SetTrigger(_heavyHash);
         _entityDamager.StartAttack();
         _heavyAttack.Reset(_animationTimes[1] / _stats.GetStat(StatType.ATTACK_SPEED));
         _heavyAttack.Start();
@@ -163,25 +165,28 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        RotateToMouse();
+        _speed = Mathf.MoveTowards(_speed, GetTargetSpeed(), Time.fixedDeltaTime * _acceleration);
+        _input.x = _inputHandler.MoveInput.x;
+        _input.z = _inputHandler.MoveInput.y;
+        _input.y = 0f;
+        _input.Normalize();
+        UpdateTargetDirection();
         Move();
-        _animator.SetFloat(SpeedHash, Mathf.Clamp01(_speed / GetMaxSpeed()));
+        _animator.SetFloat(_speedHash, Mathf.Clamp01(_speed / GetMaxSpeed()));
         _dashTimer.Update(Time.fixedDeltaTime);
         _lightAttack.Update(Time.fixedDeltaTime);
         _heavyAttack.Update(Time.fixedDeltaTime);
     }
 
-    private void RotateToMouse() {
-        _lookDiff = (_inputHandler.WorldMousePosition - transform.position).normalized;
-        _lookDiff.y = 0f;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_lookDiff), Time.fixedDeltaTime * _rotationSpeed);
+    private void UpdateTargetDirection() {
+        _targetDirection = Quaternion.AngleAxis(Globals.Instance.MainCamera.transform.eulerAngles.y, Vector3.up) * _input;
+        if (_inputHandler.IsMovePressed) {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(_targetDirection, transform.up), _rotationSpeed * Time.fixedDeltaTime);
+        }   
     }
 
     private void Move() {
-        _speed = Mathf.MoveTowards(_speed, GetTargetSpeed(), Time.fixedDeltaTime * _acceleration);
-        _input.x = _inputHandler.MoveInput.x;
-        _input.z = _inputHandler.MoveInput.y;
-        _velocity = _input;
+        _velocity = _targetDirection;
         _velocity.y = -0.1f;
         _velocity = Vector3.ClampMagnitude(_velocity * _speed, GetMaxSpeed());
         _controller.SimpleMove(_velocity);
@@ -208,12 +213,6 @@ public class PlayerController : MonoBehaviour {
             return _dashForce;
         } else {
             return _inputHandler.IsSprintPressed ? _sprintSpeed : _maxSpeed;
-        }
-    }
-    private void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.layer == 10) {
-
-            CurrentHealth = CurrentHealth + _healAmount;
         }
     }
 }
