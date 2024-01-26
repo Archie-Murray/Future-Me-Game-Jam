@@ -57,7 +57,7 @@ public class Health : MonoBehaviour {
         }
     }
 
-    public void Heal(float amount) { 
+    public void Heal(float amount) {
         _currentHealth = Mathf.Min(_currentHealth + amount, _maxHealth);
         OnHeal?.Invoke(amount);
     }
