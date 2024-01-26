@@ -9,13 +9,11 @@ using UnityEngine.Audio;
     public AudioMixer MainMixer;
     public AudioMixerGroup BGM;
     public AudioMixerGroup SFX;
+    public SoundEffect[] SoundEffects;
 
-    [SerializeField] private readonly Dictionary<SoundEffectType, AudioClip> _clips = new Dictionary<SoundEffectType, AudioClip>();
-    public SoundManager(SoundEffect[] soundEffects, AudioMixer audioMixer, AudioMixerGroup sfx, AudioMixerGroup bgm) {
-        MainMixer = audioMixer;
-        SFX = sfx;
-        BGM = bgm;
-        foreach (SoundEffect soundEffect in soundEffects) {
+    [SerializeField] private Dictionary<SoundEffectType, AudioClip> _clips = new Dictionary<SoundEffectType, AudioClip>();
+    public void Init() {
+        foreach (SoundEffect soundEffect in SoundEffects) {
             _clips.Add(soundEffect.Type, soundEffect.Clip);
         }
     }
